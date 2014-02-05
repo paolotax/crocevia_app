@@ -1,0 +1,3 @@
+class Libro < CDQManagedObject
+
+end
