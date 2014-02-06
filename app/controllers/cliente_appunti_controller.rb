@@ -23,7 +23,6 @@ class ClienteAppuntiController < UIViewController
     @tableView = rmq.append(UITableView.grouped, :table_view).get.tap do |tv|
       tv.delegate = self
       tv.dataSource = self
-      tv.registerClass(AppuntoCellAuto, forCellReuseIdentifier:"cellAppuntoAuto")
     end
 
     @refresh = rmq(@tableView).append(UIRefreshControl).on(:value_changed) do
@@ -223,33 +222,40 @@ class ClienteAppuntiController < UIViewController
     
     indexPath = @tableView.indexPathForCell(cell)
     appunto = @appunti_da_fare[indexPath.row]   
-    case index 
-      when 0
-        status = 'da_fare'
-      when 1
-        status = 'in_sospeso'
-      when 2
-        status = 'completato'
-    end
-
-    if appunto.status != status
-      appunto.updated_at = Time.now
-      appunto.status = status
+    
+    if index == 0
+      appunto.cliente.toggle_baule
       cdq.save
       Store.shared.persist
       @tableView.reloadRowsAtIndexPaths [indexPath],  withRowAnimation:UITableViewRowAnimationRight
+    else  
+      case index
+        when 1
+          status = 'da_fare'
+        when 2
+          status = 'in_sospeso'
+        when 3
+          status = 'completato'
+      end
 
-      DataImporter.default.synchronize(lambda do
-        #reload
-      end,
-      failure:lambda do
-        App.alert "Impossibile salvare dati sul server"
-      end) 
+      if appunto.status != status
+        appunto.updated_at = Time.now
+        appunto.status = status
+        cdq.save
+        Store.shared.persist
+        @tableView.reloadRowsAtIndexPaths [indexPath],  withRowAnimation:UITableViewRowAnimationRight
 
-    else
-      cell.hideUtilityButtonsAnimated true
+        DataImporter.default.synchronize(lambda do
+          #reload
+        end,
+        failure:lambda do
+          App.alert "Impossibile salvare dati sul server"
+        end) 
+
+      else
+        cell.hideUtilityButtonsAnimated true
+      end
     end
-
   end
 
 

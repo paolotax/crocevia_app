@@ -3,7 +3,7 @@ module ClienteCellStylesheet
 
   def cliente_cell(st)
     #st.frame = {l: 0, t: 0, w: 320, h: 20}
-    st.background_color = color.clear
+    st.background_color = color.white
     st.view.accessoryType  = UITableViewCellAccessoryDetailDisclosureButton
     st.view.separatorInset = UIEdgeInsetsMake(0, 50, 0, 0)
   end

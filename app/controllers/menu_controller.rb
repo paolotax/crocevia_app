@@ -1,7 +1,7 @@
 class MenuController < UIViewController 
 
 
-  #attr_reader :nel_baule_controller, :da_fare_controller, :in_sospeso_controller, :cronologia_controller
+  attr_accessor :nel_baule_controller, :da_fare_controller, :in_sospeso_controller, :cronologia_controller
 
 
   def viewDidLoad
@@ -25,6 +25,14 @@ class MenuController < UIViewController
     @menu_table_view.delegate = self
     @menu_table_view.dataSource = self
 
+    self.sideMenuViewController.delegate = self
+  end
+
+
+  def sideMenuViewControllerDidCloseMenu sideMenuViewController
+    puts "didclose #{sideMenuViewController.mainViewController}"
+
+    sideMenuViewController.mainViewController.view.hidden = false
   end
 
 
@@ -135,8 +143,6 @@ class MenuController < UIViewController
     tableView.deselectRowAtIndexPath(indexPath, animated:false)
     cell = tableView.cellForRowAtIndexPath indexPath
 
-
-
     if tableView == @menu_table_view
       
       if indexPath.row == 0
@@ -157,9 +163,13 @@ class MenuController < UIViewController
       
     end
 
-    #rmq(self.sideMenuViewController.mainViewController.view).animations.fade_out(duration: 1.5)
-    self.sideMenuViewController.setMainViewController controller, animated:true, closeMenu:true 
-    
+    if @old == controller
+      self.sideMenuViewController.closeMenuAnimated(true, completion:nil)
+    else
+      #rmq(self.sideMenuViewController.mainViewController.view).animations.fade_out(duration: 1.5)
+      self.sideMenuViewController.setMainViewController controller, animated:true, closeMenu:true 
+    end
+
     if @old then
       puts @old
       #@old.removeFromSuperview

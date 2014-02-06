@@ -3,6 +3,9 @@ class ClientiController < UITableViewController
 
   def initWithCDQQuery(query, andTitle:title, andColor:color)
     init
+
+    @flipAnimationController = FlipAnimationController.new
+
     @query = query
     @title = title
     @color = color
@@ -34,6 +37,8 @@ class ClientiController < UITableViewController
       # self.navigationController.navigationBar.setTitleTextAttributes(NSForegroundColorAttributeName => rmq.color.white)
     end
     
+    self.navigationController.delegate = self
+
     init_nav
   end
 
@@ -50,6 +55,22 @@ class ClientiController < UITableViewController
   def viewWillDisappear(animated)
     super
     "TSMessageNotification".remove_observer(self, nil)
+  end
+
+
+#pragma mark - Transition
+
+
+  def navigationController(navigationController, animationControllerForOperation:operation, fromViewController:fromVC, toViewController:toVC)
+    
+    # if operation == UINavigationControllerOperationPush
+    #   @interactionController.wireToViewController toVC 
+    # end
+
+    if (toVC.is_a? AppuntiController) || (fromVC.is_a? AppuntiController)
+      @flipAnimationController.reverse = operation == UINavigationControllerOperationPop
+      @flipAnimationController
+    end
   end
 
 
@@ -86,6 +107,14 @@ class ClientiController < UITableViewController
     self.navigationItem.tap do |nav|
       nav.leftBarButtonItem = UIBarButtonItem.imaged('001-menu-gray') do
         self.sideMenuViewController.openMenuAnimated true, completion:nil
+      end
+
+      nav.rightBarButtonItem = UIBarButtonItem.titled('Appunti') do
+        controller = AppuntiController.alloc.initWithCDQQuery(Appunto.cronologia, andTitle:"cronologia", andColor:nil)
+        
+        controller.show_cliente = true
+        self.navigationController.pushViewController(controller, animated:true)
+        controller.init_nav
       end
     end
   end

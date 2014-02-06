@@ -30,5 +30,14 @@ class Cliente < CDQManagedObject
     end
     color
   end
+
+
+  def toggle_baule
+    if nel_baule == 1
+      self.nel_baule = 0
+    else
+      self.nel_baule = 1
+    end
+  end
   
 end

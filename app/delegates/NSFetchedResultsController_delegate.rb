@@ -15,7 +15,8 @@ module NSFetchedResultsControllerDelegate
         tableView.deleteRowsAtIndexPaths([path], withRowAnimation:UITableViewRowAnimationFade)
       when NSFetchedResultsChangeUpdate
         puts path
-        configureCell(tableView.cellForRowAtIndexPath(path), atIndexPath:path)
+        tableView.reloadRowsAtIndexPaths([path], withRowAnimation:UITableViewRowAnimationFade)
+        #configureCell(tableView.cellForRowAtIndexPath(path), atIndexPath:path)
       when NSFetchedResultsChangeMove
         tableView.deleteRowsAtIndexPaths([path], withRowAnimation:UITableViewRowAnimationFade)
         tableView.insertRowsAtIndexPaths([new_path], withRowAnimation:UITableViewRowAnimationFade)

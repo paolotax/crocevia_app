@@ -1,5 +1,7 @@
 class ClienteAppuntiControllerStylesheet < ApplicationStylesheet
 
+  include AppuntoCellStylesheet
+
   def table_view(st)
     st.frame = {t: 0, w: 320, h: 568}
 

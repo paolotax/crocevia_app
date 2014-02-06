@@ -32,9 +32,10 @@ module ClienteAppuntiDelegate
 
   def left_utility_buttons
     left_utility_buttons = []
-    left_utility_buttons.sw_addUtilityButtonWithColor COLORS[1], title:"da fare"
-    left_utility_buttons.sw_addUtilityButtonWithColor COLORS[2], title:"sospeso"
-    left_utility_buttons.sw_addUtilityButtonWithColor COLORS[3], title:"fatto"
+    left_utility_buttons.sw_addUtilityButtonWithColor COLORS[0], icon:"icon-nel_baule-on35".uiimage   
+    left_utility_buttons.sw_addUtilityButtonWithColor COLORS[1], icon:"icon-da_fare-on35".uiimage
+    left_utility_buttons.sw_addUtilityButtonWithColor COLORS[2], icon:"icon-in_sospeso-on35".uiimage
+    left_utility_buttons.sw_addUtilityButtonWithColor COLORS[3], icon:"icon-completato-on35".uiimage
     left_utility_buttons
   end
 
@@ -62,18 +63,18 @@ module ClienteAppuntiDelegate
 
     elsif indexPath.section == 1
 
-      cell = tableView.dequeueReusableCellWithIdentifier("cellAppuntoAuto", forIndexPath:indexPath)
+      cell = tableView.dequeueReusableCellWithIdentifier('appuntoCell') || begin
+        rmq.create(AppuntoCell, :appunto_cell, cell_identifier: "appuntoCell").get
+      end
 
+      cell.delegate = self
       cell.containingTableView = tableView
       cell.setCellHeight cell.frame.size.height
-
+      
       cell.leftUtilityButtons  = left_utility_buttons
       cell.rightUtilityButtons = right_utility_buttons
       
-      cell.delegate = self
-
-      appunto = appunti_da_fare.objectAtIndex( indexPath.row )
-      cell.fill_data(appunto, withCliente:false)
+      configureCell(cell, atIndexPath:indexPath)
     
     else
 
@@ -95,6 +96,26 @@ module ClienteAppuntiDelegate
       end
     end    
 
+    cell
+  end
+
+
+  def configureCell(cell, atIndexPath:indexPath)
+    unless cell.nil?
+      appunto = appunti_da_fare.objectAtIndex(indexPath.row)
+      cell.update(
+        cliente_nome: appunto.cliente.nome,
+        destinatario: appunto.destinatario,
+        note: appunto.note_e_righe,
+        status: appunto.status,
+        nel_baule: appunto.cliente.nel_baule,
+        created_at: appunto.created_at,
+        updated_at: appunto.updated_at,
+        telefono: appunto.telefono,
+        email: appunto.email,
+        show_cliente: false
+      )
+    end
     cell
   end
   
@@ -125,9 +146,7 @@ module ClienteAppuntiDelegate
 
   def tableView(tableView, heightForRowAtIndexPath:indexPath)
     if indexPath.section == 1
-      cell = tableView.dequeueReusableCellWithIdentifier("cellAppuntoAuto")
-      appunto = appunti_da_fare.objectAtIndex( indexPath.row )
-      cell.get_height(appunto)
+      90
     elsif indexPath.section == 0
       80
     else
@@ -143,15 +162,6 @@ module ClienteAppuntiDelegate
       "in sospeso"
     elsif section == 3
       "completati"
-    end
-  end
-
-
-  def tableView(tableView, estimatedHeightForRowAtIndexPath:indexPath)
-    if indexPath.section == 1
-      200
-    else
-      44
     end
   end
 
