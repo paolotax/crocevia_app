@@ -110,7 +110,9 @@ class ClientiController < UITableViewController
       end
 
       nav.rightBarButtonItem = UIBarButtonItem.titled('Appunti') do
-        controller = AppuntiController.alloc.initWithCDQQuery(Appunto.cronologia, andTitle:"cronologia", andColor:nil)
+        
+        query = Appunto.per_localita.send("a_#{@title.split(" ").join("_")}")
+        controller = AppuntiController.alloc.initWithCDQQuery(query, andTitle:"da fare", andColor:nil)
         
         controller.show_cliente = true
         self.navigationController.pushViewController(controller, animated:true)

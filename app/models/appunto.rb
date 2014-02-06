@@ -4,7 +4,8 @@ class Appunto < CDQManagedObject
   
   scope :a_tutti,      a_per_provincia.where(deleted_at: nil)     
   
-  scope :cronologia,   sort_by(:created_at, :descending).where(deleted_at: nil)     
+  scope :cronologia,   sort_by(:created_at, :descending).where(deleted_at: nil)
+  scope :per_localita, sort_by("cliente.provincia").sort_by("cliente.comune").sort_by("cliente.remote_id").sort_by(:remote_id, :descending)
   
   scope :a_nel_baule,  where(deleted_at: nil).and("cliente.nel_baule = true")
   scope :a_in_sospeso, where(deleted_at: nil).and(status: "in_sospeso")

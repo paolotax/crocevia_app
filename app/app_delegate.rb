@@ -30,6 +30,7 @@ class AppDelegate
     sideMenuViewController.edgeOffset = UIOffsetMake(20.0, 0.0)
     sideMenuViewController.zoomScale = 0.5634
     sideMenuViewController.animationType = TWTSideMenuAnimationTypeFadeIn
+    sideMenuViewController.animationDuration = 0.3
 
     @window = UIWindow.alloc.initWithFrame(UIScreen.mainScreen.bounds)
     @window.rootViewController = sideMenuViewController
