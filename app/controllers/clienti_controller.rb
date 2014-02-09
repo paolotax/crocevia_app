@@ -1,6 +1,10 @@
 class ClientiController < UITableViewController
 
 
+  include NSFetchedResultsControllerDelegate
+  include FetchProvince
+  
+
   def initWithCDQQuery(query, andTitle:title, andColor:color)
     init
 
@@ -10,6 +14,7 @@ class ClientiController < UITableViewController
     @title = title
     @color = color
     @controller = FetchControllerQuery.controllerWithQuery @query
+    @controller.delegate = self
 
     self
   end
@@ -39,15 +44,14 @@ class ClientiController < UITableViewController
     
     self.navigationController.delegate = self
 
+    load_province
     init_nav
   end
 
 
   def viewWillAppear(animated)
     super
-
-    self.title = "#{@controller.fetchedObjects.count} #{@title}"
-
+    self.title = "#{@title} (#{@controller.fetchedObjects.count})"
     "TSMessageNotification".add_observer(self, 'show_message:', nil)
   end
 
@@ -112,11 +116,12 @@ class ClientiController < UITableViewController
       nav.rightBarButtonItem = UIBarButtonItem.titled('Appunti') do
         
         query = Appunto.per_localita.send("a_#{@title.split(" ").join("_")}")
-        controller = AppuntiController.alloc.initWithCDQQuery(query, andTitle:"da fare", andColor:nil)
-        
+        controller = AppuntiController.alloc.initWithCDQQuery(query, andTitle:@title, andColor:nil)
         controller.show_cliente = true
+        
         self.navigationController.pushViewController(controller, animated:true)
         controller.init_nav
+        controller.load_province
       end
     end
   end
@@ -134,6 +139,7 @@ class ClientiController < UITableViewController
       cliente.nel_baule = 0
     end    
     cdq(cliente).save
+    Store.shared.persist
     cell.nel_baule.nel_baule = cliente.nel_baule
   end
 

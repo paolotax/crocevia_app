@@ -29,11 +29,7 @@ class MenuController < UIViewController
   end
 
 
-  def sideMenuViewControllerDidCloseMenu sideMenuViewController
-    puts "didclose #{sideMenuViewController.mainViewController}"
-
-    sideMenuViewController.mainViewController.view.hidden = false
-  end
+#pragma mark - view controllers
 
 
   def nel_baule_controller
@@ -94,6 +90,24 @@ class MenuController < UIViewController
     UIGraphicsEndImageContext()
 
     return theImage
+  end
+
+
+#pragma mark - sideMenuViewControllerDelegates
+
+
+
+  def sideMenuViewControllerDidCloseMenu(sideMenuViewController)
+    controller = sideMenuViewController.mainViewController
+    if controller.topViewController.is_a? AppuntiController
+      controller.topViewController.reload
+    end    
+    
+    if controller.topViewController.respond_to? :load_province
+      controller.topViewController.load_province
+    end
+
+    controller.view.hidden = false
   end
 
 

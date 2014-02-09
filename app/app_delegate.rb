@@ -21,10 +21,10 @@ class AppDelegate
     AFNetworkActivityIndicatorManager.sharedManager.enabled = true
     
     menuViewController = MenuController.new
-    mainViewController = ImagesController.new
+    mainViewController = menuViewController.nel_baule_controller
 
     # create a new side menu
-    sideMenuViewController = TWTSideMenuViewController.alloc.initWithMenuViewController menuViewController, mainViewController:UINavigationController.alloc.initWithRootViewController(mainViewController)
+    sideMenuViewController = TWTSideMenuViewController.alloc.initWithMenuViewController menuViewController, mainViewController:mainViewController
 
     sideMenuViewController.shadowColor = UIColor.blackColor
     sideMenuViewController.edgeOffset = UIOffsetMake(20.0, 0.0)

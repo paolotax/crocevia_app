@@ -54,6 +54,7 @@ Motion::Project::App.setup do |app|
     pod 'LBBlurredImage'
     pod 'TSMessages'
     pod 'SWTableViewCell'
+    pod 'RNFrostedSidebar'
   end
  
 end

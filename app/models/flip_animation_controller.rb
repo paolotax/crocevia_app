@@ -35,14 +35,14 @@ class FlipAnimationController
                                  options:0,
                               animations: lambda do 
                             UIView.addKeyframeWithRelativeStartTime(0.0,
-                                                    relativeDuration:0.3,
+                                                    relativeDuration:0.4,
                                                            animations: lambda do
                                                                 # 7. rotate the from view
                                                                 fromView.layer.transform = self.yRotation factor * (Math::PI  / 2)
                                                             end
                             )
-                            UIView.addKeyframeWithRelativeStartTime(0.3,
-                                                    relativeDuration:0.3,
+                            UIView.addKeyframeWithRelativeStartTime(0.4,
+                                                    relativeDuration:0.4,
                                                           animations: lambda do
                                         # 8. rotate the to view
                                         toView.layer.transform = self.yRotation 0.0
@@ -62,7 +62,7 @@ class FlipAnimationController
 
 
   def transitionDuration(transitionContext)
-    0.6
+    0.8
   end
 
 

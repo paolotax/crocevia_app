@@ -7,7 +7,7 @@ class Appunto < CDQManagedObject
   scope :cronologia,   sort_by(:created_at, :descending).where(deleted_at: nil)
   scope :per_localita, sort_by("cliente.provincia").sort_by("cliente.comune").sort_by("cliente.remote_id").sort_by(:remote_id, :descending)
   
-  scope :a_nel_baule,  where(deleted_at: nil).and("cliente.nel_baule = true")
+  scope :a_nel_baule,  where(deleted_at: nil).and("cliente.nel_baule = true").and(:status).ne("completato")
   scope :a_in_sospeso, where(deleted_at: nil).and(status: "in_sospeso")
   scope :a_da_fare,    where(deleted_at: nil).and(:status).ne("in_sospeso").and.ne("completato")
   scope :a_completato,    where(deleted_at: nil).and(:status).eq("completato")
@@ -24,6 +24,11 @@ class Appunto < CDQManagedObject
     note_e_righe    
   end
 
+
+  def provincia
+    cliente.provincia
+  end
+  
 
   def calc_importo
     importi = [0]

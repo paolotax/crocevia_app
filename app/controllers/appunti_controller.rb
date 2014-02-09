@@ -2,6 +2,8 @@ class AppuntiController < UITableViewController
 
   
   include NSFetchedResultsControllerDelegate
+  include FetchProvince
+  include PrintDelegate
 
 
   attr_accessor :show_cliente
@@ -33,7 +35,6 @@ class AppuntiController < UITableViewController
   end
 
 
-
 #pragma mark - Initialization 
   
 
@@ -56,8 +57,21 @@ class AppuntiController < UITableViewController
 
       nav.rightBarButtonItem = UIBarButtonItem.titled('Clienti') do
         self.navigationController.popViewControllerAnimated(true)
+        self.navigationController.topViewController.load_province
       end
     end
+  end
+
+
+#pragma mark - actions
+
+
+  def reload
+    @controller = nil
+    @controller = FetchControllerQuery.controllerWithQuery @query
+    @controller.delegate = self 
+    self.title =  "#{@title} (#{@controller.fetchedObjects.count})" 
+    tableView.reloadData 
   end
 
 
@@ -90,6 +104,7 @@ class AppuntiController < UITableViewController
       cdq.save
       Store.shared.persist
       tableView.reloadRowsAtIndexPaths [indexPath],  withRowAnimation:UITableViewRowAnimationRight
+      self.tableView.reloadData
     else  
       case index
         when 1

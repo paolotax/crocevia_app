@@ -43,4 +43,21 @@ class Riga < CDQManagedObject
 
   end
 
+
+  def self.addToAppunto(appunto, withLibro:libro)
+    riga = Riga.create ({
+          riga_uuid: BubbleWrap.create_uuid.downcase,
+          appunto: appunto,
+          libro: libro,
+          appunto_id: appunto.remote_id, 
+          libro_id: libro.remote_id,
+          quantita: 1
+        })
+
+    riga.set_default_conditions
+    riga.appunto.updated_at = Time.now
+    riga
+  end
+
+
 end

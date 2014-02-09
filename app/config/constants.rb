@@ -26,12 +26,20 @@ STATUSES = ["da fare", "in sospeso", "preparato", "completato"]
 
 FILTRI = ["nel baule", "da fare", "in sospeso", "tutti"]
   
-COLORS = [
-  "#F5A523".uicolor,
-  "#7DD320".uicolor,
-  "#D50820".uicolor,
-  "#3E94E0".uicolor
-]
+
+  COLORS = [
+    "#ff7f00".uicolor,
+    "#5ad535".uicolor,
+    "#f80e57".uicolor,
+    "#259cf3".uicolor
+  ]
+  
+# COLORS = [
+#   "#F5A523".uicolor,
+#   "#7DD320".uicolor,
+#   "#D50820".uicolor,
+#   "#3E94E0".uicolor
+# ]
 
 MENU_IMAGES = [
   "icon-nel_baule",

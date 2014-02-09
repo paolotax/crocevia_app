@@ -4,8 +4,8 @@ class Cliente < CDQManagedObject
   
   scope :tutti,      per_provincia     
   scope :nel_baule,  where(nel_baule: true)
-  scope :in_sospeso, where(:nel_baule).ne(true).and(appunti_da_fare: nil).and(:appunti_in_sospeso).ne(0)
-  scope :da_fare,    where(:nel_baule).ne(true).and(:appunti_da_fare).ne(0)
+  scope :in_sospeso, where(appunti_da_fare: nil).and(:appunti_in_sospeso).ne(0)
+  scope :da_fare,    where(:appunti_da_fare).ne(0)
 
 
   def citta
