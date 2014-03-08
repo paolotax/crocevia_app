@@ -78,7 +78,6 @@ class LibriController < UITableViewController
   def tableView(tableView, cellForRowAtIndexPath:indexPath)
 
     cell = self.tableView.dequeueReusableCellWithIdentifier('libriCell') || begin
-      puts "created"
       rmq.create(LibriCell, :libri_cell, cell_identifier: "libriCell").get
     end
     cell.update({
@@ -125,7 +124,7 @@ class LibriController < UITableViewController
         App.alert "Dispositivo non connesso alla rete. Riprova più tardi"
         return
       end
-      DataImporter.default.importa_libri(nil) do |result|
+      SyncManager.default.importa_libri(nil) do |result|
         @refresh.endRefreshing unless @refresh.nil?
         if result.success?
           reload

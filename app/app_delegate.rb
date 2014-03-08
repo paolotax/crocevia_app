@@ -1,9 +1,9 @@
 class AppDelegate
-  
-  
-  include CDQ
 
+
+  include CDQ
   
+    
   attr_reader :window, :store
   attr_accessor :url_session
 
@@ -11,7 +11,7 @@ class AppDelegate
   def application(application, didFinishLaunchingWithOptions:launchOptions)
 
 
-    cdq.setup(context: Store.shared.context) # don't set up model or store coordinator
+    #cdq.setup(context: Store.shared.context) # don't set up model or store coordinator
     
     Store.shared.setupReachability
 
@@ -21,6 +21,7 @@ class AppDelegate
     AFNetworkActivityIndicatorManager.sharedManager.enabled = true
     
     menuViewController = MenuController.new
+    
     mainViewController = menuViewController.nel_baule_controller
 
     # create a new side menu
@@ -31,6 +32,7 @@ class AppDelegate
     sideMenuViewController.zoomScale = 0.5634
     sideMenuViewController.animationType = TWTSideMenuAnimationTypeFadeIn
     sideMenuViewController.animationDuration = 0.3
+    sideMenuViewController.openMenuAnimated true, completion:nil
 
     @window = UIWindow.alloc.initWithFrame(UIScreen.mainScreen.bounds)
     @window.rootViewController = sideMenuViewController
@@ -38,7 +40,7 @@ class AppDelegate
 
     if CredentialStore.default.token.blank?
       @login = LoginController.alloc.init
-      @window.rootViewController.presentModalViewController(@login, animated:false)
+      @window.rootViewController.presentViewController(@login, animated:false, completion:nil)
     end
 
     # UIApplication.sharedApplication.setStatusBarStyle UIStatusBarStyleLightContent

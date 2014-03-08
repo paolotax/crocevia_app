@@ -41,7 +41,7 @@ class EditListController < UITableViewController
     end
     status = @items[indexPath.row]
     cell.textLabel.text = status
-    cell.accessoryType = UITableViewCellAccessoryCheckmark if status == value.split("_").join(" ")
+    cell.accessoryType = UITableViewCellAccessoryCheckmark if status == value
     cell
   end
 
@@ -49,7 +49,7 @@ class EditListController < UITableViewController
   def tableView(tableView, didSelectRowAtIndexPath:indexPath)
 
     if value
-      previousIndexPath = NSIndexPath.indexPathForRow(@items.index(value.split("_").join(" ")), inSection:0)
+      previousIndexPath = NSIndexPath.indexPathForRow(@items.index(value), inSection:0)
       cell = tableView.cellForRowAtIndexPath(previousIndexPath)
       cell.accessoryType = UITableViewCellAccessoryNone
     end
@@ -57,7 +57,7 @@ class EditListController < UITableViewController
     tableView.cellForRowAtIndexPath(indexPath).accessoryType = UITableViewCellAccessoryCheckmark
     tableView.deselectRowAtIndexPath(indexPath, animated:true)
 
-    self.delegate.editListController(self, didSelectItem:@items[indexPath.row].split(" ").join("_"))
+    self.delegate.editListController(self, didSelectItem:@items[indexPath.row])
 
   end
 

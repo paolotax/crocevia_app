@@ -1,5 +1,6 @@
 class Store
 
+
   include CDQ
   
   
@@ -22,7 +23,7 @@ class Store
       else
         client.operationQueue.suspended = false
         if CredentialStore.default.has_logged_in?
-          DataImporter.default.synchronize( 
+          SyncManager.default.synchronize( 
               lambda do
                 "reload_clienti_and_views".post_notification(self, filtro: nil)
                 "reload_cliente".post_notification
@@ -83,6 +84,19 @@ class Store
     @undo_manager
   end
 
+  
+  def save
+    error_ptr = Pointer.new(:object)
+    unless @context.save(error_ptr)
+      raise "Error when saving the model: #{error_ptr[0].description}"
+    else
+      persist
+    end
+    
+    # Clear caches, they will be reloaded on demand
+    # ManagedObjectClasses.each {|c| c.reset}
+  end
+
 
   def persist
     error_ptr = Pointer.new(:object)
@@ -124,6 +138,9 @@ class Store
     
     @persistent_context = @store.persistentStoreManagedObjectContext
     @context = @store.mainQueueManagedObjectContext
+
+    cdq.contexts.push(@context)
+    cdq.contexts.push(@persistent_context)
 
     @undo_manager = NSUndoManager.alloc.init
     @context.setUndoManager @undo_manager

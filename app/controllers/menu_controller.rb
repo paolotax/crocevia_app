@@ -1,11 +1,14 @@
 class MenuController < UIViewController 
 
 
-  attr_accessor :nel_baule_controller, :da_fare_controller, :in_sospeso_controller, :cronologia_controller
+  #attr_accessor :nel_baule_controller, :da_fare_controller, :in_sospeso_controller, :cronologia_controller
 
 
   def viewDidLoad
     super
+    puts "didLoad"
+    # non capisco
+    @nel_baule_controller = UINavigationController.alloc.initWithRootViewController ClientiController.alloc.initWithCDQQuery(Cliente.per_provincia.nel_baule, andTitle:'nel baule', andColor:COLORS[0])
 
     rmq.stylesheet = MenuControllerStylesheet
     rmq(self.view).apply_style :root_view
@@ -33,7 +36,10 @@ class MenuController < UIViewController
 
 
   def nel_baule_controller
-    @nel_baule_controller ||= UINavigationController.alloc.initWithRootViewController ClientiController.alloc.initWithCDQQuery(Cliente.per_provincia.nel_baule, andTitle:'nel baule', andColor:COLORS[0])
+    @nel_baule_controller || begin
+      puts "load nel baule" 
+      @nel_baule_controller = UINavigationController.alloc.initWithRootViewController ClientiController.alloc.initWithCDQQuery(Cliente.per_provincia.nel_baule, andTitle:'nel baule', andColor:COLORS[0])
+    end
   end
     
 
@@ -96,14 +102,15 @@ class MenuController < UIViewController
 #pragma mark - sideMenuViewControllerDelegates
 
 
-
   def sideMenuViewControllerDidCloseMenu(sideMenuViewController)
     controller = sideMenuViewController.mainViewController
+    
     if controller.topViewController.is_a? AppuntiController
       controller.topViewController.reload
     end    
     
     if controller.topViewController.respond_to? :load_province
+      puts "side #{controller.topViewController}"
       controller.topViewController.load_province
     end
 

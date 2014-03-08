@@ -4,6 +4,7 @@ class AppuntiController < UITableViewController
   include NSFetchedResultsControllerDelegate
   include FetchProvince
   include PrintDelegate
+  include SwipeAppuntoDelegate
 
 
   attr_accessor :show_cliente
@@ -81,104 +82,13 @@ class AppuntiController < UITableViewController
   def appuntoFormController(appuntoFormController, didSaveAppunto:appunto)
 
     appuntoFormController.dismissViewControllerAnimated(true, completion:nil)
-    DataImporter.default.synchronize(lambda do
+    SyncManager.default.synchronize(lambda do
                   #reload
                 end,
                 failure:lambda do
                   App.alert "Impossibile salvare dati sul server"
                 end) 
 
-  end
-
-
-#pragma mark - SWTableViewDelegate
-
-
-  def swipeableTableViewCell(cell, didTriggerLeftUtilityButtonWithIndex:index)
-    
-    indexPath = tableView.indexPathForCell(cell)
-    appunto = @controller.objectAtIndexPath(indexPath)   
-    
-    if index == 0
-      appunto.cliente.toggle_baule
-      cdq.save
-      Store.shared.persist
-      tableView.reloadRowsAtIndexPaths [indexPath],  withRowAnimation:UITableViewRowAnimationRight
-      self.tableView.reloadData
-    else  
-      case index
-        when 1
-          status = 'da_fare'
-        when 2
-          status = 'in_sospeso'
-        when 3
-          status = 'completato'
-      end
-
-      if appunto.status != status
-        appunto.updated_at = Time.now
-        appunto.status = status
-        cdq.save
-        Store.shared.persist
-        # tableView.reloadRowsAtIndexPaths [indexPath],  withRowAnimation:UITableViewRowAnimationRight
-
-        DataImporter.default.synchronize( -> {}, 
-          failure:lambda do
-            App.alert "Impossibile salvare dati sul server"
-          end) 
-
-      else
-        cell.hideUtilityButtonsAnimated true
-      end
-    end
-  end
-
-
-  def swipeableTableViewCell(cell, didTriggerRightUtilityButtonWithIndex:index)
-    
-    @current_index   = tableView.indexPathForCell(cell)
-    @current_appunto = @controller.objectAtIndexPath(@current_index)   
-
-    if index == 1
-      print_appunti([@current_appunto.remote_id])
-    else
-      @actionSheet = UIActionSheet.alloc.initWithTitle("Sei sicuro?",
-                                              delegate:self,
-                                          cancelButtonTitle:"Annulla",
-                                          destructiveButtonTitle:"Elimina",
-                                          otherButtonTitles:nil)
-
-      @actionSheet.showFromRect(cell.frame, inView:self.view, animated:true)
-    end
-
-  end
-
-
-#pragma mark - ActionSheet delegate
-
-
-  def actionSheet(actionSheet, didDismissWithButtonIndex:buttonIndex)
-    if buttonIndex != @actionSheet.cancelButtonIndex
-      
-      tableView.beginUpdates
-      @current_appunto.deleted_at = @current_appunto.updated_at = Time.now      
-      cdq.save
-      Store.shared.persist
-      #tableView.deleteRowsAtIndexPaths([@current_index], withRowAnimation:UITableViewRowAnimationLeft)
-      tableView.endUpdates
-      
-      DataImporter.default.synchronize( -> {}, 
-        failure:lambda do
-          App.alert "Impossibile salvare dati sul server"
-        end) 
-
-    else
-      cell = tableView.cellForRowAtIndexPath(@current_index)
-      cell.hideUtilityButtonsAnimated true
-    end
-    @actionSheet = nil
-    @current_appunto = nil
-    @current_index = nil
   end
 
 

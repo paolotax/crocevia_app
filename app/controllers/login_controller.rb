@@ -78,6 +78,7 @@ class LoginController < UIViewController
       
       submit_button = rmq(cell.contentView).append(UIButton.rounded, :submit_button).on(:tap) do
         dismiss = lambda do
+          SyncManager.default.synchronize(-> {}, failure:->{}) 
           self.dismissViewControllerAnimated true, completion:nil
         end
         UserAuthenticator.shared.loginWithUsername(@username_field.text, password:@password_field.text, success:dismiss, failure:nil)

@@ -165,7 +165,7 @@ class LibroAddController < UIViewController
     lvc.load_data Libro.create_from_google_book(book)
     lvc.isNew = true
     nav = UINavigationController.alloc.initWithRootViewController lvc
-    self.presentModalViewController nav, animated:true
+    self.presentViewController nav, animated:true, completion:nil
 
   end
 

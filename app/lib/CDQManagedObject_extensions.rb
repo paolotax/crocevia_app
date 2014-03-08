@@ -1,8 +1,9 @@
 class CDQManagedObject
 
-  
-  def save_to_backend(parameters, withNotification:notification, success:success, failure:
+
+  def syncOperation(parameters, tableName:tableName, success:success, failure:
     failure)
+
 
     processSuccessBlock = lambda do
       success.call
@@ -13,13 +14,13 @@ class CDQManagedObject
     end
 
     successBlock = lambda do |operation, responseObject|
-      result = DataImporterResult.new(operation, responseObject, nil)
+      result = SyncManagerResult.new(operation, responseObject, nil)
       NSLog "Postato #{self.entity.managedObjectClassName} #{self.remote_id}"
       processSuccessBlock.call
     end
 
     failureBlock = lambda do |operation, error|
-      puts "status=#{operation.HTTPRequestOperation.response.statusCode}"
+      NSLog "status=#{operation.HTTPRequestOperation.response.statusCode}"
       if (operation.HTTPRequestOperation.response.statusCode == 401)
         CredentialStore.default.token = nil
         auth = UserAuthenticator.new
@@ -33,32 +34,31 @@ class CDQManagedObject
       end
     end
 
+    client = Store.shared.client
     token = CredentialStore.default.token
-    Store.shared.client.setDefaultHeader("Authorization", value: "Bearer #{token}")
-
-    # if remote_id == 0
-    #   method = "postObject:path:parameters:success:failure:"
-    # else
-    #   method = "patchObject:path:parameters:success:failure:"
-    # end
-    #
-    # Store.shared.backend.send( method, self, nil, parameters, successBlock, failureBlock)
+    client.setDefaultHeader("Authorization", value: "Bearer #{token}")
 
     if remote_id == 0
-      Store.shared.backend.postObject(self,
-                                    path:nil,
-                              parameters:parameters,
-                                 success:successBlock,
-                                 failure:failureBlock)
+      method = RKRequestMethodPOST
+      path = "api/v1/#{tableName}"
     else
-      Store.shared.backend.putObject(self,
-                                    path:nil,
-                              parameters:parameters,
-                                 success:successBlock,
-                                 failure:failureBlock)
+      method = RKRequestMethodPUT
+      path = "api/v1/#{tableName}/#{remote_id}"
     end
+
+    manager = Store.shared.backend
+    operation = manager.appropriateObjectRequestOperationWithObject(self, method:method, path:path, parameters: parameters)
+
+    operation.setCompletionBlockWithSuccess( -> (operation, mappingResult) { 
+          successBlock.call(operation, mappingResult)
+        },
+      failure:-> (operation, error) { 
+          failureBlock.call(operation, error) 
+        }
+    )
+    puts operation
+    operation
   end
-    
 
 
 end

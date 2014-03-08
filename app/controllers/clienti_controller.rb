@@ -71,7 +71,7 @@ class ClientiController < UITableViewController
     #   @interactionController.wireToViewController toVC 
     # end
 
-    if (toVC.is_a? AppuntiController) || (fromVC.is_a? AppuntiController)
+    if ((toVC.is_a? AppuntiController) &&  (fromVC.is_a? ClientiController)) || ((toVC.is_a? ClientiController) &&  (fromVC.is_a? AppuntiController))
       @flipAnimationController.reverse = operation == UINavigationControllerOperationPop
       @flipAnimationController
     end
@@ -104,6 +104,14 @@ class ClientiController < UITableViewController
   end
 
 
+  def add_cliente
+    form = ClienteFormController.alloc.initWithCliente(nil)
+    form.delegate = self
+    controller = UINavigationController.alloc.initWithRootViewController form
+    self.presentViewController controller, animated:true, completion:nil
+  end
+
+
 #pragma mark - Initialization 
 
 
@@ -127,20 +135,32 @@ class ClientiController < UITableViewController
   end
 
 
-#pragma mark - cellCliente
+#pragma mark - ClienteCell delegate
 
 
   def clienteCellDidTapBaule(cell)
   
     cliente = @controller.objectAtIndexPath(tableView.indexPathForCell(cell))   
-    if cliente.nel_baule == 0 
-      cliente.nel_baule = 1
-    else
-      cliente.nel_baule = 0
-    end    
+    cliente.toggle_baule   
     cdq(cliente).save
     Store.shared.persist
     cell.nel_baule.nel_baule = cliente.nel_baule
+  end
+
+
+#pragma mark - ClienteFormController delegate 
+  
+
+  def clienteFormController(clienteFormController, didSaveCliente:cliente)
+    clienteFormController.dismissViewControllerAnimated(true, completion:nil)
+    if cliente
+      SyncManager.default.synchronize(lambda do
+                    #reload
+                  end,
+                  failure:lambda do
+                    App.alert "Impossibile salvare dati sul server"
+                  end)
+    end
   end
 
 
@@ -197,7 +217,7 @@ class ClientiController < UITableViewController
       end
 
       UserAuthenticator.alloc.login( lambda do
-          DataImporter.default.importa_clienti(nil) do |result|
+          SyncManager.default.importa_clienti(nil) do |result|
             reload if result.success?
             @refresh.endRefreshing unless @refresh.nil?  
           end

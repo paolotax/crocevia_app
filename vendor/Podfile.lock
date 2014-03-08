@@ -23,8 +23,8 @@ PODS:
   - RestKit/Support (0.22.0):
     - TransitionKit (= 2.0.0)
   - RKValueTransformers (1.0.1)
-  - RNFrostedSidebar (0.2.0)
   - SOCKit (1.1)
+  - SVProgressHUD (1.0)
   - SWTableViewCell (0.2.3)
   - TransitionKit (2.0.0)
   - TSMessages (0.9.4):
@@ -34,7 +34,7 @@ PODS:
 DEPENDENCIES:
   - LBBlurredImage
   - RestKit
-  - RNFrostedSidebar
+  - SVProgressHUD
   - SWTableViewCell
   - TSMessages
   - TWTSideMenuViewController
@@ -46,8 +46,8 @@ SPEC CHECKSUMS:
   LBBlurredImage: f44c432794e2a8a225f4c8a563aa1bd713b6b4c5
   RestKit: dc107a0aa4f962575ad0385bac5b3c5e4f591f4e
   RKValueTransformers: 1562d458b9c9d59ce777bfc5982f2e1aef2e9182
-  RNFrostedSidebar: 36339438a07088fd3ee3926db03af499477ee048
   SOCKit: 2f3bc4d07910de12dcc202815e07db68a3802581
+  SVProgressHUD: 5e10939a296debf5fe5a5895eda9539b8b2114f1
   SWTableViewCell: 270c3758a84547b1cad43d70b72203b3003ce27b
   TransitionKit: 433284465abacdc07852d7db6dd0cc075010059a
   TSMessages: 5ab92604b02e49a755d2cc2baf114d2248a90977

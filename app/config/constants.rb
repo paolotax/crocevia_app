@@ -12,6 +12,7 @@ TextFieldTypeLongString  = 1
 TextFieldTypeString      = 2
 TextFieldTypeEmail       = 3
 TextFieldTypePhone       = 4
+TextFieldTypeCapitalize  = 5
 
 
 SettoriList = ["Scolastico", "Parascolastico", "Vacanze", "Varia", "Eventuale", "Guide", "Adozionale", "Concorrenza", "Scorrimento"]

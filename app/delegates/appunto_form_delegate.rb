@@ -167,19 +167,20 @@ module AppuntoFormDelegate
       Store.shared.context.deleteObject(riga)
       tableView.beginUpdates
       if  @righe.array.count == 0
-        ip = [1,2].nsindexpath
-        
+
+        ip = [1,2].nsindexpath        
         tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation:UITableViewRowAnimationFade)
         tableView.deleteRowsAtIndexPaths([ip], withRowAnimation:UITableViewRowAnimationFade)
-        
       else
         tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation:UITableViewRowAnimationFade)
         # ricalcola i totali
-        totali_cell = tableView.cellForRowAtIndexPath([1, @righe.array.count + 1].nsindexpath)
-        totali_cell.update({
-          importo: @appunto.calc_importo,
-          copie: @appunto.calc_copie
-        })
+        totali_cell = tableView.cellForRowAtIndexPath([1, @righe.array.count + 2].nsindexpath)
+        if totali_cell
+          totali_cell.update({
+            importo: @appunto.calc_importo,
+            copie: @appunto.calc_copie
+          })
+        end
       end
       tableView.endUpdates  
     end
@@ -193,7 +194,7 @@ module AppuntoFormDelegate
 
       if indexPath.row == 0
         # cliente
-   
+           
       elsif indexPath.row == 1
         # destinatario
         edit_controller = EditTextFieldController.alloc.initWithType(TextFieldTypeLongString)
@@ -223,7 +224,7 @@ module AppuntoFormDelegate
       elsif indexPath.row == 3
         # status
         listController = EditListController.alloc.initWithItems(STATUSES)
-        listController.value = @appunto.status
+        listController.value = @appunto.status.split("_").join(" ")
         listController.delegate = self
         self.navigationController.pushViewController listController, animated:true
 
@@ -286,8 +287,8 @@ module AppuntoFormDelegate
     elsif indexPath.section == 2
       cell = tableView.cellForRowAtIndexPath(indexPath)
 
-      scanVC = ScanController.alloc.initWithAppunto(@appunto)
-      self.presentModalViewController scanVC, animated:true
+      scanVC = UINavigationController.alloc.initWithRootViewController ScanController.alloc.initWithAppunto(@appunto)
+      self.presentViewController scanVC, animated:true, completion:nil
     end
   end
 

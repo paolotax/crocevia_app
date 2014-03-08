@@ -36,6 +36,8 @@ class EditTextFieldControllerStylesheet < ApplicationStylesheet
       st.view.keyboardType = UIKeyboardTypeEmailAddress
     elsif fieldType == TextFieldTypePhone
       st.view.keyboardType = UIKeyboardTypePhonePad
+    elsif fieldType == TextFieldTypeCapitalize
+      st.view.autocapitalizationType = UITextAutocapitalizationTypeAllCharacters
     end
   end
 end

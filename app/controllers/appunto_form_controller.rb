@@ -83,8 +83,8 @@ class AppuntoFormController < UITableViewController
     @appunto.updated_at = Time.now
     @undo.endUndoGrouping
 
-    cdq.save
-    Store.shared.persist
+    Store.shared.save
+    #Store.shared.persist
 
     self.delegate.appuntoFormController(self, didSaveAppunto:@appunto)
     
@@ -107,8 +107,8 @@ class AppuntoFormController < UITableViewController
 
   def editListController(controller, didSelectItem:item)
     cell = tableView.cellForRowAtIndexPath([0, 3].nsindexpath)
-    cell.detailTextLabel.text = item.split('_').join(' ')
-    @appunto.status = item
+    cell.detailTextLabel.text = item
+    @appunto.status = item.split(' ').join('_')
     self.navigationController.popViewControllerAnimated(true)
   end
 

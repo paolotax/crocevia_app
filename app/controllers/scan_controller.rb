@@ -7,14 +7,14 @@ class ScanController < UIViewController
   def initWithAppunto(appunto)
     init
     @appunto = appunto
+    @righe = appunto.righe.sort_by("libro.titolo")
     self
   end
+
 
   def viewDidLoad
     super
 
-    #per i pulsanti della sidebar
-    @optionIndices = NSMutableIndexSet.new
     @light_is_on = false
 
     #per i barcode letti
@@ -35,13 +35,6 @@ class ScanController < UIViewController
       tv.dataSource = self
     end
 
-    @button_dismiss = rmq.append(UIButton.custom, :button_dismiss).on(:touch_up_inside) do |sender|
-      dismiss
-    end.get
-    @button_dismiss.setTitle "Chiudi", forState:UIControlStateNormal
-    @button_dismiss.setTitleColor UIColor.blueColor, forState:UIControlStateNormal
-
-
     setupCaptureSession()
     @previewLayer.frame = @preview_view.bounds
     @preview_view.layer.addSublayer @previewLayer
@@ -54,7 +47,8 @@ class ScanController < UIViewController
 
     "didFindBook".add_observer(self, "displayBook:", nil)
     
-    true
+    init_nav
+
   end
 
 
@@ -65,7 +59,6 @@ class ScanController < UIViewController
   end
 
 
-
   def viewWillDisappear(animated)
     super
     self.stopRunning
@@ -74,9 +67,25 @@ class ScanController < UIViewController
 
 #pragma mark - subViews
 
+  
+  def init_nav
+    self.navigationController.navigationBar.setTintColor COLORS[3]
+    self.navigationItem.tap do |nav|
+      nav.leftBarButtonItem = UIBarButtonItem.titled("Chiudi") do
+        self.dismissViewControllerAnimated(true, completion:nil)
+      end
 
-  def dismiss
-    self.dismissViewControllerAnimated(true, completion:nil)
+      nav.rightBarButtonItem = UIBarButtonItem.imaged('171-sun') do
+        @device.lockForConfiguration nil
+        if @light_is_on == false
+          @device.setTorchMode AVCaptureTorchModeOn
+        else
+          @device.setTorchMode AVCaptureTorchModeOff
+        end
+        @device.unlockForConfiguration
+        @light_is_on = !@light_is_on
+      end
+    end  
   end
 
 
@@ -98,67 +107,8 @@ class ScanController < UIViewController
 
     bc = LibroAddController.alloc.init
     bc.book = book
-    self.presentModalViewController(bc, animated:true)
+    self.presentViewController(bc, animated:true, completion:nil)
     #bc.loadData(book)
-  end
-
-
-#pragma mark - Actions
-
-
-  def torchButtonAction(sender)
-
-    images = [UIImage.imageNamed("171-sun"),
-              UIImage.imageNamed("126-moon")]
-
-    colors = [[240,159,254].uicolor,
-              [126,242,195].uicolor]
-
-    @optionIndices.removeAllIndexes
-    if @light_is_on == true
-      @optionIndices.addIndex 0
-    else
-      @optionIndices.addIndex 1
-    end
-
-    sidebar = RNFrostedSidebar.alloc.initWithImages(images, selectedIndices:@optionIndices, borderColors:colors)
-    sidebar.showFromRight = true
-    sidebar.delegate = self
-    sidebar.show
-  end
-
-
-#pragma mark - RNFrostedSidebarDelegate
-
-  
-  def sidebar(sidebar, didTapItemAtIndex:index)
-
-    if index == 0
-      @device.lockForConfiguration nil
-      @device.setTorchMode AVCaptureTorchModeOn
-      #@device.setFlashMode AVCaptureFlashModeOn
-      @device.unlockForConfiguration
-      @light_is_on = true
-    else
-      @device.lockForConfiguration nil
-      @device.setTorchMode AVCaptureTorchModeOff
-      #@device.setFlashMode AVCaptureFlashModeOn
-      @device.unlockForConfiguration
-      @light_is_on = false
-    end
-
-    sidebar.dismissAnimated true, completion:nil
-  end
-
-  
-  def sidebar(sidebar, didEnable:itemEnabled, itemAtIndex:index)
-
-    @optionIndices.removeAllIndexes
-    if itemEnabled
-      @optionIndices.addIndex index
-    else
-      @optionIndices.removeIndex index
-    end
   end
 
 
@@ -295,7 +245,8 @@ class ScanController < UIViewController
             Riga.addToAppunto(@appunto, withLibro:libro[0])
             @tableView.reloadData
           else
-            GoogleBook.search(barcode.metadataObject.stringValue)
+            App.alert("Codice EAN non trovato")
+            # GoogleBook.search(barcode.metadataObject.stringValue)
           end   
         end)
     end 
@@ -310,7 +261,7 @@ class ScanController < UIViewController
   end 
 
   def tableView(tableView, numberOfRowsInSection:section)
-    @appunto.righe.count
+    @righe.count
   end
 
 
@@ -319,7 +270,7 @@ class ScanController < UIViewController
     cell = tableView.dequeueReusableCellWithIdentifier("rigaCell") || begin
       rmq.create(RigaCell, :riga_cell, cell_identifier: "rigaCell").get
     end
-    riga = @appunto.righe.array[indexPath.row - 1]   
+    riga = @righe.array[indexPath.row]   
     cell.update({
       titolo: riga.libro.titolo,
       quantita: riga.quantita,
@@ -342,14 +293,18 @@ class ScanController < UIViewController
 
 
   def tableView(tableView, commitEditingStyle:editingStyle, forRowAtIndexPath:indexPath)
-    riga = @appunto.righe.objectAtIndex(indexPath.row)
-    riga.remove    
+    riga = @righe.array[indexPath.row]    
+    Store.shared.context.deleteObject(riga)
     tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation:UITableViewRowAnimationFade)
   end
 
 
   def tableView(tableView, didSelectRowAtIndexPath:indexPath)
     tableView.deselectRowAtIndexPath(indexPath, animated:true)
+    # edit riga
+    riga = @righe.array[indexPath.row]  
+    controller = RigaFormController.alloc.initWithRiga(riga)
+    self.navigationController.pushViewController controller, animated:true
   end
 
 

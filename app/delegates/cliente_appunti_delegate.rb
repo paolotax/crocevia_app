@@ -59,7 +59,7 @@ module ClienteAppuntiDelegate
 
       cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator
       cell.textLabel.text = @cliente.nome
-      cell.detailTextLabel.text = @cliente.comune
+      cell.detailTextLabel.text = @cliente.citta
 
     elsif indexPath.section == 1
 
@@ -123,8 +123,13 @@ module ClienteAppuntiDelegate
   def tableView(tableView, didSelectRowAtIndexPath:indexPath)
     
     tableView.deselectRowAtIndexPath(indexPath, animated:false)
+
+    if indexPath.section == 0
+      clienteController = ClienteFormController.alloc.initWithCliente(@cliente)
+      clienteController.delegate = self
+      self.navigationController.pushViewController clienteController, animated:true
     
-    if indexPath.section == 1
+    elsif indexPath.section == 1
       appunto = appunti_da_fare.objectAtIndex(indexPath.row)
       controller = UINavigationController.alloc.initWithRootViewController(AppuntoFormController.alloc.initWithAppunto(appunto))
       controller.topViewController.delegate = self

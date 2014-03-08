@@ -3,6 +3,7 @@ class ClienteAppuntiController < UIViewController
   
   include PrintDelegate
   include ClienteAppuntiDelegate
+  include SwipeAppuntoDelegate
   
   # attr_accessor :cliente
 
@@ -84,13 +85,13 @@ class ClienteAppuntiController < UIViewController
 
   def init_toolbar    
     items = [
-      @mail_button = UIBarButtonItem.imaged('730-envelope') { sendEmail(nil) },
+      @mail_button = UIBarButtonItem.imaged('730-envelope-selected') { sendEmail(nil) },
       UIBarButtonItem.flexible_space,
-      @call_button = UIBarButtonItem.imaged('735-phone') { makeCall(nil) },
+      @call_button = UIBarButtonItem.imaged('735-phone-selected') { makeCall(nil) },
       UIBarButtonItem.flexible_space,
-      @site_button = UIBarButtonItem.imaged('786-browser') { goToSite(nil) },
+      @site_button = UIBarButtonItem.imaged('786-browser-selected') { goToSite(nil) },
       UIBarButtonItem.flexible_space,
-      @navigate_button = UIBarButtonItem.imaged('852-map') { navigate(nil) }
+      @navigate_button = UIBarButtonItem.imaged('815-car-selected') { navigate(nil) }
     ]
     self.setToolbarItems items, animated:false
     self.navigationController.toolbarHidden = false
@@ -199,107 +200,34 @@ class ClienteAppuntiController < UIViewController
   end
 
 
+#pragma mark - ClienteFormController delegate 
+  
+
+  def clienteFormController(clienteFormController, didSaveCliente:cliente)
+    clienteFormController.navigationController.popViewControllerAnimated(true)
+    if cliente
+      SyncManager.default.synchronize(lambda do
+                    #reload
+                  end,
+                  failure:lambda do
+                    App.alert "Impossibile salvare dati sul server"
+                  end)
+    end
+  end
+
+
 #pragma mark - AppuntoFormController delegate 
   
 
   def appuntoFormController(appuntoFormController, didSaveAppunto:appunto)
 
     appuntoFormController.dismissViewControllerAnimated(true, completion:nil)
-    DataImporter.default.synchronize(lambda do
+    SyncManager.default.synchronize(lambda do
                   reload
                 end,
                 failure:lambda do
                   App.alert "Impossibile salvare dati sul server"
                 end) 
-
-  end
-
-
-#pragma mark - SWTableViewDelegate
-
-
-  def swipeableTableViewCell(cell, didTriggerLeftUtilityButtonWithIndex:index)
-    
-    indexPath = @tableView.indexPathForCell(cell)
-    appunto = @appunti_da_fare[indexPath.row]   
-    
-    if index == 0
-      appunto.cliente.toggle_baule
-      cdq.save
-      Store.shared.persist
-      @tableView.reloadRowsAtIndexPaths [indexPath],  withRowAnimation:UITableViewRowAnimationRight
-    else  
-      case index
-        when 1
-          status = 'da_fare'
-        when 2
-          status = 'in_sospeso'
-        when 3
-          status = 'completato'
-      end
-
-      if appunto.status != status
-        appunto.updated_at = Time.now
-        appunto.status = status
-        cdq.save
-        Store.shared.persist
-        @tableView.reloadRowsAtIndexPaths [indexPath],  withRowAnimation:UITableViewRowAnimationRight
-
-        DataImporter.default.synchronize(lambda do
-          #reload
-        end,
-        failure:lambda do
-          App.alert "Impossibile salvare dati sul server"
-        end) 
-
-      else
-        cell.hideUtilityButtonsAnimated true
-      end
-    end
-  end
-
-
-  def swipeableTableViewCell(cell, didTriggerRightUtilityButtonWithIndex:index)
-    
-    @current_index   = @tableView.indexPathForCell(cell)
-    @current_appunto = @appunti_da_fare[@current_index.row]   
-
-    if index == 1
-      print_appunti([@current_appunto.remote_id])
-    else
-      @actionSheet = UIActionSheet.alloc.initWithTitle("Sei sicuro?",
-                                              delegate:self,
-                                          cancelButtonTitle:"Annulla",
-                                          destructiveButtonTitle:"Elimina",
-                                          otherButtonTitles:nil)
-
-      @actionSheet.showFromRect(cell.frame, inView:self.view, animated:true)
-    end
-
-  end
-
-
-#pragma mark - ActionSheet delegate
-
-
-  def actionSheet(actionSheet, didDismissWithButtonIndex:buttonIndex)
-    if buttonIndex != @actionSheet.cancelButtonIndex
-      
-      @tableView.beginUpdates
-      @current_appunto.deleted_at = @current_appunto.updated_at = Time.now      
-      cdq.save
-      Store.shared.persist
-      @tableView.deleteRowsAtIndexPaths([@current_index], withRowAnimation:UITableViewRowAnimationLeft)
-      reload
-      @tableView.endUpdates
-      
-    else
-      cell = @tableView.cellForRowAtIndexPath(@current_index)
-      cell.hideUtilityButtonsAnimated true
-    end
-    @actionSheet = nil
-    @current_appunto = nil
-    @current_index = nil
   end
 
 
@@ -315,7 +243,7 @@ class ClienteAppuntiController < UIViewController
       params = { cliente: @cliente.remote_id }
 
       UserAuthenticator.alloc.login( lambda do
-          DataImporter.default.importa_appunti(params) do |result|
+          SyncManager.default.importa_appunti(params) do |result|
             reload if result.success?
             @refresh.endRefreshing unless @refresh.nil?
           end

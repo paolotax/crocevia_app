@@ -9,7 +9,7 @@ class Cliente < CDQManagedObject
 
 
   def citta
-    (self.frazione.nil? || self.frazione == "") ? self.comune : self.frazione
+    frazione.blank? ? comune : frazione
   end
 
 
@@ -33,11 +33,18 @@ class Cliente < CDQManagedObject
 
 
   def toggle_baule
+    self.updated_at = Time.now
     if nel_baule == 1
       self.nel_baule = 0
     else
       self.nel_baule = 1
     end
   end
+
+
+  def valid?
+    !nome.blank? && !comune.blank? && !provincia.blank? && !cliente_tipo.blank?
+  end
+  
   
 end

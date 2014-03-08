@@ -13,15 +13,24 @@ module FetchProvince
         @segmentedProvince = nil
       end
       
-      items = ["tutte"] + lista_province(@query)
+      province = ["tutte"] + lista_province(@query)
 
-      @segmentedProvince = UISegmentedControl.alloc.initWithItems(items)
+      @segmentedProvince = UISegmentedControl.alloc.initWithItems(province)
       @segmentedProvince.addTarget(self, action:"changeProvincia:", forControlEvents:UIControlEventValueChanged)
       @segmentedProvince.delegate = self
       
       segItem = UIBarButtonItem.alloc.initWithCustomView(@segmentedProvince) 
       sep =  UIBarButtonItem.alloc.initWithBarButtonSystemItem(UIBarButtonSystemItemFlexibleSpace, target:nil, action:nil)
-      self.toolbarItems = [sep, segItem, sep]
+      items = [sep, segItem, sep]
+
+      if self.is_a? ClientiController
+        items << UIBarButtonItem.add do
+          add_cliente
+        end
+      end
+
+      self.toolbarItems = items
+
       self.navigationController.toolbarHidden = false
             
       (0..@segmentedProvince.numberOfSegments-1).each do |index|

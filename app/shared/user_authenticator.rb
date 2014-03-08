@@ -6,7 +6,6 @@ class UserAuthenticator
   end
   
   def login(success, failure:failure)
-
     puts "login"
     self.loginWithUsername(CredentialStore.default.username, 
                       password:CredentialStore.default.password, 
