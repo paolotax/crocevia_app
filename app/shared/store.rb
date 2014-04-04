@@ -139,11 +139,12 @@ class Store
     @persistent_context = @store.persistentStoreManagedObjectContext
     @context = @store.mainQueueManagedObjectContext
 
-    cdq.contexts.push(@context)
-    cdq.contexts.push(@persistent_context)
 
     @undo_manager = NSUndoManager.alloc.init
     @context.setUndoManager @undo_manager
+
+    cdq.contexts.push(@context)
+    cdq.contexts.push(@persistent_context)
 
     #RKlcl_configure_by_name("RestKit/Network", RKLogLevelTrace)
     #RKlcl_configure_by_name("RestKit/ObjectMapping", RKLogLevelTrace)

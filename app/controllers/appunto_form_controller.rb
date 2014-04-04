@@ -72,6 +72,7 @@ class AppuntoFormController < UITableViewController
 
 
   def cancel
+    puts "cancel"
     @undo.endUndoGrouping
     @undo.undoNestedGroup
     self.dismissViewControllerAnimated(true, completion:nil)

@@ -16,12 +16,18 @@ module FetchProvince
       province = ["tutte"] + lista_province(@query)
 
       @segmentedProvince = UISegmentedControl.alloc.initWithItems(province)
-      @segmentedProvince.addTarget(self, action:"changeProvincia:", forControlEvents:UIControlEventValueChanged)
+      @segmentedProvince.addTarget(
+        self, 
+        action: "changeProvincia:", 
+        forControlEvents: UIControlEventValueChanged
+      )
       @segmentedProvince.delegate = self
       
-      segItem = UIBarButtonItem.alloc.initWithCustomView(@segmentedProvince) 
-      sep =  UIBarButtonItem.alloc.initWithBarButtonSystemItem(UIBarButtonSystemItemFlexibleSpace, target:nil, action:nil)
-      items = [sep, segItem, sep]
+      items = [
+        UIBarButtonItem.flexiblespace, 
+        UIBarButtonItem.alloc.initWithCustomView(@segmentedProvince), 
+        UIBarButtonItem.flexiblespace
+      ]
 
       if self.is_a? ClientiController
         items << UIBarButtonItem.add do

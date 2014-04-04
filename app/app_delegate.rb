@@ -11,7 +11,7 @@ class AppDelegate
   def application(application, didFinishLaunchingWithOptions:launchOptions)
 
 
-    #cdq.setup(context: Store.shared.context) # don't set up model or store coordinator
+    cdq.setup(context: Store.shared.context) # don't set up model or store coordinator
     
     Store.shared.setupReachability
 
