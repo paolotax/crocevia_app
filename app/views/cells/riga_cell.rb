@@ -32,7 +32,7 @@ class RigaCell < UITableViewCell
     end
 
     if prezzo_unitario = params[:prezzo_unitario]
-      @prezzo_unitario.text = "prezzo cad. #{prezzo_unitario.string_with_style(:currency)}"
+      @prezzo_unitario.text = "prezzo cad. #{prezzo_unitario.to_f.string_with_style(:currency)}"
     end
 
     if image_url = params[:image_url]

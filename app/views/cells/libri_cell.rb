@@ -18,7 +18,7 @@ class LibriCell < UITableViewCell
     end
 
     if prezzo_copertina = params[:prezzo_copertina]
-      @prezzo_copertina.text = "prezzo cad. #{prezzo_copertina.string_with_style(:currency)}"
+      @prezzo_copertina.text = "prezzo cad. #{prezzo_copertina.to_f.string_with_style(:currency)}"
     end
 
     if image_url = params[:image_url]

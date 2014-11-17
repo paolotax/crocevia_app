@@ -17,12 +17,12 @@ class EditTextFieldController < UIViewController
     rmq.stylesheet = EditTextFieldControllerStylesheet
     rmq(self.view).apply_style :root_view
 
-    imageView = rmq.append(UIImageView, :image_view).get
-    imageView.setImageToBlur(UIImage.imageNamed("galaxy"),
-                        blurRadius:KLBBlurredImageDefaultBlurRadius,
-                   completionBlock:lambda do |error|
-                       NSLog("The blurred image has been setted")
-                   end)
+    # imageView = rmq.append(UIImageView, :image_view).get
+    # imageView.setImageToBlur(UIImage.imageNamed("galaxy"),
+    #                     blurRadius:KLBBlurredImageDefaultBlurRadius,
+    #                completionBlock:lambda do |error|
+    #                    NSLog("The blurred image has been setted")
+    #                end)
 
     @text_label = rmq.append(UILabel, :text_label).get
     @text_field = rmq.append(UITextField, :text_field).get

@@ -131,7 +131,7 @@ class AppuntiController < UITableViewController
 
     cell.delegate = self
     cell.containingTableView = tableView
-    cell.setCellHeight cell.frame.size.height
+    #cell.setCellHeight cell.frame.size.height
     
     cell.leftUtilityButtons  = left_utility_buttons
     cell.rightUtilityButtons = right_utility_buttons
@@ -169,11 +169,16 @@ class AppuntiController < UITableViewController
 
 
   def tableView(tableView, didSelectRowAtIndexPath:indexPath)
-    tableView.deselectRowAtIndexPath(indexPath, animated:false)
+    # tableView.deselectRowAtIndexPath(indexPath, animated:false)
     
-    appunto = @controller.objectAtIndexPath(indexPath)
-    controller = UINavigationController.alloc.initWithRootViewController(AppuntoFormController.alloc.initWithAppunto(appunto))
-    controller.topViewController.delegate = self
+    # appunto = @controller.objectAtIndexPath(indexPath)
+    # controller = UINavigationController.alloc.initWithRootViewController(AppuntoFormController.alloc.initWithAppunto(appunto))
+    # controller.topViewController.delegate = self
+    # self.presentViewController(controller, animated:true, completion:nil)
+
+    index = indexPath.row
+    controller = UINavigationController.alloc.initWithRootViewController AppuntoPageController.alloc.initWithAppunti(@controller.fetchedObjects, index:index)
+      
     self.presentViewController(controller, animated:true, completion:nil)
   end
 

@@ -51,7 +51,7 @@ class CircleButton < UIButton
     end
 
     ## OvalOuter Drawing
-    ovalOuterPath = UIBezierPath.bezierPathWithOvalInRect CGRectMake(8, 8, 25, 25)
+    ovalOuterPath = UIBezierPath.bezierPathWithOvalInRect CGRectMake(9, 9, 26, 26)
     circleOuterColor.setStroke
     ovalOuterPath.lineWidth = 1
     ovalOuterPath.stroke
@@ -59,7 +59,7 @@ class CircleButton < UIButton
     if nel_baule == 1
 
       ## OvalInner Drawing
-      ovalInnerPath = UIBezierPath.bezierPathWithOvalInRect CGRectMake(12, 12, 17, 17)
+      ovalInnerPath = UIBezierPath.bezierPathWithOvalInRect CGRectMake(12, 12, 20, 20)
       baseColor.setFill
       ovalInnerPath.fill
 

@@ -21,7 +21,7 @@ class TotaliCell < UITableViewCell
 
   def update(params)
     if importo = params[:importo]
-      @importo.text = "#{importo.string_with_style(:currency)}"
+      @importo.text = "#{importo.to_f.string_with_style(:currency)}"
     end
 
     if copie = params[:copie]

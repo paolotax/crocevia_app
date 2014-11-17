@@ -170,6 +170,7 @@ class MappingProvider
                                  appunti_in_sospeso: "appunti_in_sospeso",
                                           nel_baule: "nel_baule",
                                               fatto: "fatto",
+                                             visita: "visita",
                                                  created_at: "created_at",
                                                  updated_at: "updated_at",
                                                  deleted_at: "deleted_at"
@@ -205,6 +206,7 @@ class MappingProvider
                                         partita_iva: "partita_iva",
                                      codice_fiscale: "codice_fiscale",
                                           nel_baule: "nel_baule",
+                                             visita: "visita",
                                          deleted_at: "deleted_at"
                                                  )
     end

@@ -9,17 +9,17 @@ module ClienteCellStylesheet
   end
 
   def nome(st)
-    st.frame = {l: 50, t: 3, w: 200, h: 25}
+    st.frame = {l: 44, t: 3, w: 200, h: 25}
     st.font = font.headline
   end
 
   def citta(st)
-    st.frame = {l: 50, t: 22, w: 200, h: 20}
+    st.frame = {l: 44, t: 22, w: 200, h: 20}
     st.font = font.subhead
   end
 
   def nel_baule(st)
-    st.frame = {l: 5, t: 3, w: 40, h: 40}
+    st.frame = {l: 0, t: 0, w: 44, h: 44}
   end
 
 

@@ -1,11 +1,13 @@
-class ClienteAppuntiController < UIViewController
+ class ClienteAppuntiController < UIViewController
 
   
   include PrintDelegate
   include ClienteAppuntiDelegate
   include SwipeAppuntoDelegate
   
+
   # attr_accessor :cliente
+
 
   def initWithCliente(cliente)
     init
@@ -24,6 +26,7 @@ class ClienteAppuntiController < UIViewController
     @tableView = rmq.append(UITableView.grouped, :table_view).get.tap do |tv|
       tv.delegate = self
       tv.dataSource = self
+      tv.registerClass(ClienteHeaderCell, forCellReuseIdentifier: "clienteHeaderCell")
     end
 
     @refresh = rmq(@tableView).append(UIRefreshControl).on(:value_changed) do
@@ -113,17 +116,17 @@ class ClienteAppuntiController < UIViewController
 
   def show_message(notification)
     message = notification.userInfo[:message]
-    
-    TSMessage.showNotificationInViewController self.navigationController,
-                                   title:message[:title],
-                                subtitle:message[:subtitle],
-                                    type:TSMessageNotificationTypeError,
-                                duration:TSMessageNotificationDurationAutomatic,
-                                callback:nil,
-                             buttonTitle:nil,
-                          buttonCallback:nil,
-                              atPosition:TSMessageNotificationPositionTop,
-                     canBeDismisedByUser:true
+
+    # TSMessage.showNotificationInViewController self.navigationController,
+    #                                title:message[:title],
+    #                             subtitle:message[:subtitle],
+    #                                 type:TSMessageNotificationTypeError,
+    #                             duration:TSMessageNotificationDurationAutomatic,
+    #                             callback:nil,
+    #                          buttonTitle:nil,
+    #                       buttonCallback:nil,
+    #                           atPosition:TSMessageNotificationPositionTop,
+    #                  canBeDismisedByUser:true
   end
 
 

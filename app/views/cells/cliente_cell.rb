@@ -23,6 +23,7 @@ class ClienteCell < UITableViewCell
   end
 
   def update(params)
+    
     if nome = params[:nome]
       @nome.text = nome
     end

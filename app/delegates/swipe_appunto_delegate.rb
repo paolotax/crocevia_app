@@ -1,5 +1,6 @@
 module SwipeAppuntoDelegate
 
+
   def swipeableTableViewCell(cell, didTriggerLeftUtilityButtonWithIndex:index)
     
     if @appunti_da_fare
@@ -18,6 +19,7 @@ module SwipeAppuntoDelegate
 
       if @appunti_da_fare
         @tableView.reloadRowsAtIndexPaths [indexPath],  withRowAnimation:UITableViewRowAnimationRight
+        @tableView.reloadRowsAtIndexPaths [[0,0].nsindexpath],  withRowAnimation:UITableViewRowAnimationRight
       else
         tableView.reloadRowsAtIndexPaths [indexPath],  withRowAnimation:UITableViewRowAnimationRight
         self.tableView.reloadData # il reload è per gli altri nel baule

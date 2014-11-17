@@ -19,7 +19,7 @@ class Appunto < CDQManagedObject
       note_e_righe += self.note + "\r\n"
     end 
     self.righe.sort_by("libro.titolo").each do |r|
-      note_e_righe += "#{r.quantita} - #{r.libro.titolo}\r\n"
+      note_e_righe += "#{r.quantita} - #{r.calc_prezzo} - #{r.libro.titolo}\r\n"
     end
     note_e_righe    
   end

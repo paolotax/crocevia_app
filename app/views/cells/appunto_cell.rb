@@ -15,13 +15,13 @@ class AppuntoCell < SWTableViewCell
   end
 
 
-  def update(params)
+  def update(data={})
 
-    if status = params[:status]
+    if status = data[:status]
       @image_status.image = "icon-#{status}-on35".uiimage
     end
 
-    if updated_at = params[:updated_at]
+    if updated_at = data[:updated_at]
       if updated_at.day == Time.now.day
         @updated_at.text = 'oggi'
       elsif updated_at.year == Time.now.year
@@ -34,9 +34,9 @@ class AppuntoCell < SWTableViewCell
     
     str = "".attrd
 
-    if params[:destinatario] && !params[:destinatario].blank?
+    if data[:destinatario] && !data[:destinatario].blank?
 
-      if params[:show_cliente] == true
+      if data[:show_cliente] == true
         destinatario_attrd = {
           NSForegroundColorAttributeName => rmq.color.dark_gray,
           NSFontAttributeName => rmq.font.with_name('Helvetica', 16)
@@ -47,25 +47,25 @@ class AppuntoCell < SWTableViewCell
           NSFontAttributeName => rmq.font.with_name('Helvetica', 18)
         }   
       end  
-      str =  str + params[:destinatario].attrd(destinatario_attrd) + "\n"
+      str =  str + data[:destinatario].attrd(destinatario_attrd) + "\n"
     end
     
-    if params[:show_cliente] && params[:show_cliente] == true
-      if params[:cliente_nome] && !params[:cliente_nome].blank?
+    if data[:show_cliente] && data[:show_cliente] == true
+      if data[:cliente_nome] && !data[:cliente_nome].blank?
         cliente_nome_attrd = {
           NSForegroundColorAttributeName => rmq.color.black,
           NSFontAttributeName => rmq.font.with_name('Helvetica', 18)
         }     
-        str =  str + params[:cliente_nome].attrd(cliente_nome_attrd) + "\n"
+        str =  str + data[:cliente_nome].attrd(cliente_nome_attrd) + "\n"
       end
     end
 
-    if params[:note] && !params[:note].blank?
+    if data[:note] && !data[:note].blank?
       note_attrd = {
         NSForegroundColorAttributeName => rmq.color.light_gray,
         NSFontAttributeName => rmq.font.with_name('HelveticaNeue', 14)
       }     
-      str =  str + params[:note].attrd(note_attrd) + "\n"
+      str =  str + data[:note].attrd(note_attrd) + "\n"
     end
 
     exclusionPath = UIBezierPath.bezierPathWithRect CGRectMake( @updated_at.frame.origin.x - 35, @updated_at.frame.origin.y - 5, @updated_at.frame.size.width, @updated_at.frame.size.height)
@@ -73,7 +73,7 @@ class AppuntoCell < SWTableViewCell
     
     @note.attributedText = str
 
-    if nel_baule = params[:nel_baule]
+    if nel_baule = data[:nel_baule]
       if nel_baule == 1
         @image_baule.image = "icon-nel_baule-on35".uiimage
       else
@@ -81,7 +81,7 @@ class AppuntoCell < SWTableViewCell
       end
     end
 
-    if params[:telefono] && !params[:telefono].blank?
+    if data[:telefono] && !data[:telefono].blank?
       @image_phone.image = "735-phone-selected".uiimage
     else
       @image_phone.image = nil

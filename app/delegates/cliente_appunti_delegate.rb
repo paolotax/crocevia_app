@@ -52,14 +52,32 @@ module ClienteAppuntiDelegate
    
     if indexPath.section == 0
       
-      cell = tableView.dequeueReusableCellWithIdentifier("cellCliente")
-      unless cell
-        cell = UITableViewCell.alloc.initWithStyle( UITableViewCellStyleSubtitle, reuseIdentifier:"cellCliente")
-      end
+      
+      cell = tableView.dequeueReusableCellWithIdentifier("clienteHeaderCell")
 
-      cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator
-      cell.textLabel.text = @cliente.nome
-      cell.detailTextLabel.text = @cliente.citta
+      # cell = tableView.dequeueReusableCellWithIdentifier("cellCliente") || begin
+      #   rmq.create(ClienteHeaderCell, :cliente_cell, reuse_identifier: "cellCliente").get
+      # end
+
+      #cell.delegate = self
+
+      cell.configure({
+        nome: @cliente.nome,
+        citta: @cliente.citta,
+        nel_baule: @cliente.nel_baule,
+        color: @cliente.color,
+        visita: @cliente.visita
+      })
+
+      # cell = tableView.dequeueReusableCellWithIdentifier("cellCliente")
+
+      # unless cell
+      #   cell = UITableViewCell.alloc.initWithStyle( UITableViewCellStyleSubtitle, reuseIdentifier:"cellCliente")
+      # end
+
+      # cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator
+      # cell.textLabel.text = @cliente.nome
+      # cell.detailTextLabel.text = @cliente.citta
 
     elsif indexPath.section == 1
 
@@ -69,7 +87,7 @@ module ClienteAppuntiDelegate
 
       cell.delegate = self
       cell.containingTableView = tableView
-      cell.setCellHeight cell.frame.size.height
+      #cell.setCellHeight cell.frame.size.height
       
       cell.leftUtilityButtons  = left_utility_buttons
       cell.rightUtilityButtons = right_utility_buttons
@@ -130,9 +148,14 @@ module ClienteAppuntiDelegate
       self.navigationController.pushViewController clienteController, animated:true
     
     elsif indexPath.section == 1
-      appunto = appunti_da_fare.objectAtIndex(indexPath.row)
-      controller = UINavigationController.alloc.initWithRootViewController(AppuntoFormController.alloc.initWithAppunto(appunto))
-      controller.topViewController.delegate = self
+      # appunto = appunti_da_fare.objectAtIndex(indexPath.row)
+      # controller = UINavigationController.alloc.initWithRootViewController(AppuntoFormController.alloc.initWithAppunto(appunto))
+      # controller.topViewController.delegate = self
+      # self.presentViewController(controller, animated:true, completion:nil)
+
+      index = indexPath.row
+      controller = UINavigationController.alloc.initWithRootViewController AppuntoPageController.alloc.initWithAppunti(appunti_da_fare, index:index)
+      
       self.presentViewController(controller, animated:true, completion:nil)
 
     elsif indexPath.section == 2
@@ -153,7 +176,7 @@ module ClienteAppuntiDelegate
     if indexPath.section == 1
       90
     elsif indexPath.section == 0
-      80
+      70
     else
       44
     end

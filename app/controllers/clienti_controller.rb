@@ -91,16 +91,16 @@ class ClientiController < UITableViewController
   def show_message(notification)
     message = notification.userInfo[:message]
     
-    TSMessage.showNotificationInViewController self,
-                                   title:message[:title],
-                                subtitle:message[:subtitle],
-                                    type:TSMessageNotificationTypeError,
-                                duration:TSMessageNotificationDurationAutomatic,
-                                callback:nil,
-                             buttonTitle:nil,
-                          buttonCallback:nil,
-                              atPosition:TSMessageNotificationPositionTop,
-                     canBeDismisedByUser:true
+    # TSMessage.showNotificationInViewController self,
+    #                                title:message[:title],
+    #                             subtitle:message[:subtitle],
+    #                                 type:TSMessageNotificationTypeError,
+    #                             duration:TSMessageNotificationDurationAutomatic,
+    #                             callback:nil,
+    #                          buttonTitle:nil,
+    #                       buttonCallback:nil,
+    #                           atPosition:TSMessageNotificationPositionTop,
+    #                  canBeDismisedByUser:true
   end
 
 

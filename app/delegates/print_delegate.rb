@@ -12,9 +12,12 @@ module PrintDelegate
       Store.shared.client.putPath("/api/v1/appunti/print_multiple",
                              parameters:data,
                                 success:lambda do |operation, responseObject|
-
-                                  resourceDocPath = NSString.alloc.initWithString(NSBundle.mainBundle.resourcePath.stringByDeletingLastPathComponent.stringByAppendingPathComponent("Documents"))
+                                  
+                                  resourceDocPath = NSFileManager.defaultManager.URLsForDirectory(NSDocumentDirectory, inDomains:NSUserDomainMask).lastObject.path
+                                  
+                                  
                                   filePath = resourceDocPath.stringByAppendingPathComponent("Sovrapacchi.pdf")
+                                  
                                   responseObject.writeToFile(filePath, atomically:true)
                                   
                                   url = NSURL.fileURLWithPath(filePath)
@@ -45,5 +48,10 @@ module PrintDelegate
   def documentInteractionControllerViewControllerForPreview(controller)
     self
   end
+
+
+
+
+
 
 end

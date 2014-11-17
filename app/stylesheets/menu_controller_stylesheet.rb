@@ -19,7 +19,7 @@ class MenuControllerStylesheet < ApplicationStylesheet
   
 
   def menu_table_view(st)
-    st.frame = {t: 150, w: 320, h: 200}
+    st.frame = {t: 150, w: 320, h: 250}
     st.view.backgroundColor = UIColor.clearColor
     #st.view.separatorStyle = UITableViewCellSeparatorStyleNone
     st.view.scrollEnabled = false

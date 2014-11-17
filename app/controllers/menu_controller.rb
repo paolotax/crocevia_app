@@ -13,7 +13,7 @@ class MenuController < UIViewController
     rmq.stylesheet = MenuControllerStylesheet
     rmq(self.view).apply_style :root_view
 
-    @data = ["Nel baule", "Da fare", "In sospeso", "Cronologia"]
+    @data = ["Nel baule", "Da fare", "In sospeso", "Cronologia", "Mappa"]
     @clienti = []
 
     init_background
@@ -64,6 +64,11 @@ class MenuController < UIViewController
     end
   end
   
+
+  def map_controller  
+    @map_controller ||= UINavigationController.alloc.initWithRootViewController MapController.new
+  end
+
 
   def init_background
 
@@ -174,6 +179,8 @@ class MenuController < UIViewController
         controller = in_sospeso_controller
       elsif indexPath.row == 3
         controller = cronologia_controller
+      elsif indexPath.row == 4
+        controller = map_controller     
       end
     else
 
@@ -191,15 +198,8 @@ class MenuController < UIViewController
       self.sideMenuViewController.setMainViewController controller, animated:true, closeMenu:true 
     end
 
-    if @old then
-      puts @old
-      #@old.removeFromSuperview
-      #@old.release
-    end
-
     @old = controller
     @search_controller.active = false
-
   end
 
 

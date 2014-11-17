@@ -27,8 +27,8 @@ class EditPrezzoController < UITableViewController
     
     error = Pointer.new(:object)
 
-    @edit_sconto.text.blank? ? sconto = 0 : sconto = @edit_sconto.text.to_f.round(2)
-    @edit_prezzo.text.blank? ? prezzo = @riga.libro.prezzo_copertina : prezzo = @edit_prezzo.text.to_f.round(2)
+    @edit_sconto.text.blank? ? sconto = 0 : sconto = @edit_sconto.text.gsub(/,/, ".").to_f.round(2)
+    @edit_prezzo.text.blank? ? prezzo = @riga.libro.prezzo_copertina : prezzo = @edit_prezzo.text.gsub(/,/, ".").to_f.round(2)
           
     success = @prezzo_changed_block.call(prezzo, sconto, error)
     if (success) 

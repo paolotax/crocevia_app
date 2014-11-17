@@ -1,6 +1,6 @@
 
 BASE_URL = "http://youpropa.com"
-#BASE_URL = "http://localhost:3000"
+#BASE_URL = "http://youpropa.dev"
 
 #server 
 APP_ID = "36e1b9ed802dc7ee45e375bf318924dc3ae0f0f842c690611fde8336687960eb"
@@ -32,7 +32,8 @@ FILTRI = ["nel baule", "da fare", "in sospeso", "tutti"]
     "#ff7f00".uicolor,
     "#5ad535".uicolor,
     "#f80e57".uicolor,
-    "#259cf3".uicolor
+    "#259cf3".uicolor,
+    "#BD10E0".uicolor
   ]
   
 # COLORS = [
@@ -46,5 +47,6 @@ MENU_IMAGES = [
   "icon-nel_baule",
   "icon-da_fare",
   "icon-in_sospeso",
-  "icon-completato"
+  "icon-completato",
+  "icon-mappa"
 ]

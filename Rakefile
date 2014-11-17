@@ -13,13 +13,10 @@ Motion::Project::App.setup do |app|
   app.short_version = '0.1.0'
   app.version = app.short_version
 
-  app.sdk_version = '7.1'
-  app.deployment_target = '7.1'
-  # Or for iOS 6
-  #app.sdk_version = '6.1'
-  #app.deployment_target = '6.0'
+  app.sdk_version = '8.1'
+  app.deployment_target = '8.1'
 
-  app.icons = ["icon@2x.png", "icon-29@2x.png", "icon-40@2x.png", "icon-60@2x.png", "icon-76@2x.png", "icon-512@2x.png"]
+  # app.icons = ["icon-40@2x.png", "icon-60@2x.png", "icon-76@2x.png"]
 
   # prerendered_icon is only needed in iOS 6
   #app.prerendered_icon = true
@@ -50,13 +47,21 @@ Motion::Project::App.setup do |app|
   #
   app.pods do
     pod 'TWTSideMenuViewController'
-    pod 'RestKit'
+    pod 'RestKit', '0.23.1'
     pod 'LBBlurredImage'
-    pod 'TSMessages'
+    pod 'TSMessages', '0.9.10'
     pod 'SWTableViewCell'
     pod 'SVProgressHUD'
+    pod 'MHPrettyDate'
 
   end
+
+  app.development do
+    app.pods do
+      pod "Reveal-iOS-SDK"
+    end
+  end
+
  
 end
 task :"build:simulator" => :"schema:build"
