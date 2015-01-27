@@ -68,7 +68,7 @@ class EditPrezzoController < UITableViewController
       sconto = SCONTI[indexPath.row - 4] 
       cell = UITableViewCell.value1("sconto#{sconto}Cell", 
         text: "sconto #{sconto}%",
-        detail:  ((@riga.libro.prezzo_copertina * (100 - sconto) / 100).string_with_style(:currency))
+        detail:  ((@riga.libro.prezzo_copertina * (100 - sconto) / 100).to_f.string_with_style(:currency))
       ) 
 
     elsif indexPath.row == 0
@@ -93,7 +93,7 @@ class EditPrezzoController < UITableViewController
       # consigliato
       cell = UITableViewCell.value1("consigliatoCell", 
         text: 'prezzo consigliato',
-        detail:  @riga.libro.prezzo_consigliato.string_with_style(:currency)
+        detail:  @riga.libro.prezzo_consigliato.to_f.string_with_style(:currency)
       )    
 
     elsif indexPath.row == 3

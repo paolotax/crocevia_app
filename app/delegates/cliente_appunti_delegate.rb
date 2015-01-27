@@ -106,11 +106,11 @@ module ClienteAppuntiDelegate
 
       if indexPath.section == 2
         cell.textLabel.text = "#{appunti_in_sospeso.count} appunti"      
-        cell.detailTextLabel.text = appunti_in_sospeso.inject(0) {|sum, a| sum + a.totale_importo.round(2)}.string_with_style(NSNumberFormatterCurrencyStyle)
+        cell.detailTextLabel.text = appunti_in_sospeso.inject(0) {|sum, a| sum + a.totale_importo.round(2)}.to_f.string_with_style(NSNumberFormatterCurrencyStyle)
 
       elsif indexPath.section == 3
         cell.textLabel.text = "#{appunti_completati.count} appunti"
-        cell.detailTextLabel.text = appunti_completati.inject(0) {|sum, a| sum + a.totale_importo.round(2)}.string_with_style(NSNumberFormatterCurrencyStyle)
+        cell.detailTextLabel.text = appunti_completati.inject(0) {|sum, a| sum + a.totale_importo.round(2)}.to_f.string_with_style(NSNumberFormatterCurrencyStyle)
       end
     end    
 

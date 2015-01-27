@@ -26,7 +26,9 @@ Motion::Project::App.setup do |app|
 
   app.files += Dir.glob(File.join(app.project_dir, 'lib/**/*.rb'))
 
-  app.provisioning_profile = '/Users/paolotax/Library/MobileDevice/Provisioning Profiles/4E9FFB4B-DEBF-4264-9C8D-815106B7FFDA.mobileprovision'   
+  #app.provisioning_profile = '/Users/paolotax/Library/MobileDevice/Provisioning Profiles/4E9FFB4B-DEBF-4264-9C8D-815106B7FFDA.mobileprovision'   
+  
+  app.provisioning_profile = '/Users/paolotax/Downloads/youpropa_profile.mobileprovision'
   app.codesign_certificate = 'iPhone Developer: Paolo Tassinari (9L6JUZD52Q)' 
 
   app.info_plist['UIViewControllerBasedStatusBarAppearance'] = false

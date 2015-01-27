@@ -93,7 +93,7 @@ class RigaFormController < UITableViewController
       # titolo
       cell ||= UITableViewCell.alloc.initWithStyle(UITableViewCellStyleSubtitle, reuseIdentifier:"libroCell")
       cell.textLabel.text = @riga.libro.titolo
-      cell.detailTextLabel.text = "prezzo copertina #{@riga.libro.prezzo_copertina.string_with_style(:currency)}"
+      cell.detailTextLabel.text = "prezzo copertina #{@riga.libro.prezzo_copertina.to_f.string_with_style(:currency)}"
       cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator
       
     elsif indexPath.section == 1
@@ -109,7 +109,7 @@ class RigaFormController < UITableViewController
         # prezzo e sconto
         cell ||= UITableViewCell.alloc.initWithStyle(UITableViewCellStyleValue1, reuseIdentifier:"prezzoCell")
         cell.textLabel.text = "prezzo"
-        cell.detailTextLabel.text = "#{@riga.prezzo_unitario.string_with_style(:currency)}"
+        cell.detailTextLabel.text = "#{@riga.prezzo_unitario.to_f.string_with_style(:currency)}"
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator
 
       elsif indexPath.row == 2
@@ -124,7 +124,7 @@ class RigaFormController < UITableViewController
       # importo
       cell ||= UITableViewCell.alloc.initWithStyle(UITableViewCellStyleValue1, reuseIdentifier:"importoCell")
       cell.textLabel.text = "importo"
-      cell.detailTextLabel.text = "#{@riga.calc_importo.string_with_style(:currency)}"
+      cell.detailTextLabel.text = "#{@riga.calc_importo.to_f.string_with_style(:currency)}"
     
     end
 
