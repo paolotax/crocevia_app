@@ -160,6 +160,7 @@
 
 
   def reload
+    #puts "RELOAD"
     @sorted_appunti = nil
     @appunti_da_fare = nil
     @appunti_in_sospeso = nil
@@ -211,6 +212,7 @@
     if cliente
       SyncManager.default.synchronize(lambda do
                     #reload
+
                   end,
                   failure:lambda do
                     App.alert "Impossibile salvare dati sul server"
@@ -227,6 +229,7 @@
     appuntoFormController.dismissViewControllerAnimated(true, completion:nil)
     SyncManager.default.synchronize(lambda do
                   reload
+                  #App.alert "reloaded"
                 end,
                 failure:lambda do
                   App.alert "Impossibile salvare dati sul server"

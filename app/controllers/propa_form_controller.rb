@@ -1,38 +1,32 @@
-class RigaFormController < UITableViewController
+class PropaFormController < UITableViewController
 
 
   attr_accessor :delegate
  
 
-  def initWithRiga(riga)
+  def initWithPropa(propa)
     initWithStyle(UITableViewStyleGrouped).tap do
       @undo = Store.shared.undo_manager
       @undo.beginUndoGrouping
-      @riga = riga
+      @propa = propa
     end
   end
 
 
-  def initWithAppunto(appunto, andLibro:libro)
+  def initWithCliente(cliente)
     initWithStyle(UITableViewStyleGrouped).tap do
       @undo = Store.shared.undo_manager
       @undo.beginUndoGrouping
-      @riga = Riga.create(
-          appunto:appunto, 
-          appunto_id:appunto.remote_id, 
-          libro:libro,
-          libro_id:libro.remote_id,
-          quantita: 1,
-          riga_uuid: BubbleWrap.create_uuid.downcase
+      @propa = Propa.create(
+          cliente: cliente
       )
-      @riga.set_default_conditions
     end
   end
 
   
   def viewDidLoad
     super
-    rmq.stylesheet = RigaFormControllerStylesheet
+    rmq.stylesheet = PropaFormControllerStylesheet
     rmq(self.tableView).apply_style :root_view
 
     init_nav
@@ -59,7 +53,7 @@ class RigaFormController < UITableViewController
 
   def save   
     @undo.endUndoGrouping
-    @riga.appunto.updated_at = Time.now   
+    # @propa.updated_at = Time.now   
     self.navigationController.popViewControllerAnimated(true)
   end
 

@@ -164,7 +164,9 @@ module AppuntoFormDelegate
     if indexPath.section == 1 && indexPath.row > 0
       
       riga = @righe.array.objectAtIndex(indexPath.row - 1)     
-      Store.shared.context.deleteObject(riga)
+      
+      riga.delete = true
+      
       tableView.beginUpdates
       if  @righe.array.count == 0
 

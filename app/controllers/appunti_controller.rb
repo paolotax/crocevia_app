@@ -169,17 +169,17 @@ class AppuntiController < UITableViewController
 
 
   def tableView(tableView, didSelectRowAtIndexPath:indexPath)
-    # tableView.deselectRowAtIndexPath(indexPath, animated:false)
+    tableView.deselectRowAtIndexPath(indexPath, animated:false)
     
-    # appunto = @controller.objectAtIndexPath(indexPath)
-    # controller = UINavigationController.alloc.initWithRootViewController(AppuntoFormController.alloc.initWithAppunto(appunto))
-    # controller.topViewController.delegate = self
-    # self.presentViewController(controller, animated:true, completion:nil)
-
-    index = indexPath.row
-    controller = UINavigationController.alloc.initWithRootViewController AppuntoPageController.alloc.initWithAppunti(@controller.fetchedObjects, index:index)
-      
+    appunto = @controller.objectAtIndexPath(indexPath)
+    controller = UINavigationController.alloc.initWithRootViewController(AppuntoFormController.alloc.initWithAppunto(appunto))
+    controller.topViewController.delegate = self
     self.presentViewController(controller, animated:true, completion:nil)
+
+    # index = indexPath.row
+    # controller = UINavigationController.alloc.initWithRootViewController AppuntoPageController.alloc.initWithAppunti(@controller.fetchedObjects, index:index)
+      
+    # self.presentViewController(controller, animated:true, completion:nil)
   end
 
 end

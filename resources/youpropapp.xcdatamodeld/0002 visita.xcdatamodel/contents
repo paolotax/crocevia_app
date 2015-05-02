@@ -27,6 +27,7 @@
     <attribute optional="YES" syncable="YES" attributeType="Date" name="deleted_at"/>
     <attribute optional="YES" syncable="YES" attributeType="Date" name="visita"/>
     <relationship optional="YES" deletionRule="Nullify" syncable="YES" name="appunti" inverseEntity="Appunto" destinationEntity="Appunto" inverseName="cliente" toMany="YES"/>
+    <relationship optional="YES" deletionRule="Nullify" syncable="YES" name="propa" inverseEntity="Propa" destinationEntity="Propa" inverseName="cliente" maxCount="1"/>
   </entity>
   <entity name="Appunto" syncable="YES" representedClassName="Appunto">
     <attribute optional="YES" syncable="YES" attributeType="Integer 32" name="remote_id" defaultValueString="0"/>
@@ -43,7 +44,6 @@
     <attribute optional="YES" syncable="YES" attributeType="Integer 32" name="totale_copie" defaultValueString="0"/>
     <attribute optional="YES" syncable="YES" attributeType="Integer 32" name="totale_importo" defaultValueString="0"/>
     <attribute optional="YES" syncable="YES" attributeType="String" name="data"/>
-    <attribute optional="YES" syncable="YES" attributeType="String" name="note_e_righe" transient="YES"/>
     <attribute optional="YES" syncable="YES" attributeType="String" name="uuid"/>
     <relationship optional="YES" deletionRule="Nullify" syncable="YES" name="cliente" inverseEntity="Cliente" destinationEntity="Cliente" inverseName="appunti" maxCount="1"/>
     <relationship optional="YES" deletionRule="Nullify" syncable="YES" name="righe" inverseEntity="Riga" destinationEntity="Riga" inverseName="appunto" toMany="YES"/>
@@ -58,6 +58,7 @@
     <attribute optional="YES" syncable="YES" attributeType="Decimal" name="sconto" defaultValueString="0.0"/>
     <attribute optional="YES" syncable="YES" attributeType="Decimal" name="importo" defaultValueString="0.0"/>
     <attribute optional="YES" syncable="YES" attributeType="String" name="riga_uuid"/>
+    <attribute optional="YES" syncable="YES" attributeType="Boolean" name="delete"/>
     <relationship optional="YES" deletionRule="Nullify" syncable="YES" name="appunto" inverseEntity="Appunto" destinationEntity="Appunto" inverseName="righe" maxCount="1"/>
     <relationship optional="YES" deletionRule="Nullify" syncable="YES" name="libro" inverseEntity="Libro" destinationEntity="Libro" inverseName="libro_righe" maxCount="1"/>
   </entity>
@@ -75,5 +76,18 @@
     <attribute optional="YES" syncable="YES" attributeType="Date" name="updated_at"/>
     <attribute optional="YES" syncable="YES" attributeType="Date" name="deleted_at"/>
     <relationship optional="YES" deletionRule="Nullify" syncable="YES" name="libro_righe" inverseEntity="Riga" destinationEntity="Riga" inverseName="libro" toMany="YES"/>
+  </entity>
+  <entity name="Propa" syncable="YES" representedClassName="Propa">
+    <attribute optional="YES" syncable="YES" attributeType="Integer 32" name="kit_1" defaultValueString="0"/>
+    <attribute optional="YES" syncable="YES" attributeType="Integer 32" name="kit_4" defaultValueString="0"/>
+    <attribute optional="YES" syncable="YES" attributeType="Integer 32" name="rel_1" defaultValueString="0"/>
+    <attribute optional="YES" syncable="YES" attributeType="Integer 32" name="rel_2" defaultValueString="0"/>
+    <attribute optional="YES" syncable="YES" attributeType="Integer 32" name="inglese" defaultValueString="0"/>
+    <attribute optional="YES" syncable="YES" attributeType="Integer 32" name="vac_1" defaultValueString="0"/>
+    <attribute optional="YES" syncable="YES" attributeType="Integer 32" name="vac_2" defaultValueString="0"/>
+    <attribute optional="YES" syncable="YES" attributeType="Integer 32" name="vac_3" defaultValueString="0"/>
+    <attribute optional="YES" syncable="YES" attributeType="Integer 32" name="vac_4" defaultValueString="0"/>
+    <attribute optional="YES" syncable="YES" attributeType="Integer 32" name="vac_5" defaultValueString="0"/>
+    <relationship optional="YES" deletionRule="Nullify" syncable="YES" name="cliente" inverseEntity="Cliente" destinationEntity="Cliente" inverseName="propa" maxCount="1"/>
   </entity>
 </model>

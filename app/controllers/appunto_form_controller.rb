@@ -15,7 +15,7 @@ class AppuntoFormController < UITableViewController
 
       @appunto = appunto
       @cliente = appunto.cliente
-      @righe = appunto.righe.sort_by("libro.titolo")
+      @righe = appunto.righe.where(delete: nil).sort_by("libro.titolo")
     end
   end
 
@@ -27,7 +27,7 @@ class AppuntoFormController < UITableViewController
 
       @cliente = cliente
       @appunto = Appunto.create cliente: @cliente, cliente_id: @cliente.remote_id, status: "da_fare", uuid: BubbleWrap.create_uuid.downcase, created_at:Time.now
-      @righe = @appunto.righe.sort_by("libro.titolo")
+      @righe = @appunto.righe.where(delete: nil).sort_by("libro.titolo")
     end
   end
 
@@ -84,8 +84,12 @@ class AppuntoFormController < UITableViewController
     @appunto.updated_at = Time.now
     @undo.endUndoGrouping
 
-    Store.shared.save
-    #Store.shared.persist
+
+      cdq.save
+      Store.shared.persist
+
+    # Store.shared.save
+    # #Store.shared.persist
 
     self.delegate.appuntoFormController(self, didSaveAppunto:@appunto)
     

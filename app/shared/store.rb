@@ -8,6 +8,7 @@ class Store
     self.backend.HTTPClient
   end
 
+  
   def baseURL
     BASE_URL
   end
@@ -119,8 +120,10 @@ class Store
     puts "persist deleted: #{@persistent_context.deletedObjects.count}"
   end
 
+
   private
 
+  
   def initialize
 
     url = NSURL.URLWithString(BASE_URL)
@@ -146,8 +149,8 @@ class Store
     cdq.contexts.push(@context)
     cdq.contexts.push(@persistent_context)
 
-    #RKlcl_configure_by_name("RestKit/Network", RKLogLevelTrace)
-    #RKlcl_configure_by_name("RestKit/ObjectMapping", RKLogLevelTrace)
+    # RKlcl_configure_by_name("RestKit/Network", RKLogLevelTrace)
+    # RKlcl_configure_by_name("RestKit/ObjectMapping", RKLogLevelTrace)
 
     MappingProvider.shared.init_mappings(@store, @backend)
   end

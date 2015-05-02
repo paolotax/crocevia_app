@@ -63,8 +63,7 @@ class AppuntoController < UIViewController
     # if fattura = appunto.fattura_id
     #   @info_documento.text = "registrato documento  #{}"
     # end
-
-
+    
   end
 
 

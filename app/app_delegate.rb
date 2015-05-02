@@ -12,6 +12,7 @@ class AppDelegate
 
 
     cdq.setup(context: Store.shared.context) # don't set up model or store coordinator
+  
     
     Store.shared.setupReachability
 

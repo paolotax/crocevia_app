@@ -4,6 +4,7 @@ class Appunto < CDQManagedObject
   
   scope :a_tutti,      a_per_provincia.where(deleted_at: nil)     
   
+
   scope :cronologia,   sort_by(:created_at, :descending).where(deleted_at: nil)
   scope :per_localita, sort_by("cliente.provincia").sort_by("cliente.comune").sort_by("cliente.remote_id").sort_by(:remote_id, :descending)
   
@@ -18,8 +19,8 @@ class Appunto < CDQManagedObject
     unless self.note.nil? || self.note == ""
       note_e_righe += self.note + "\r\n"
     end 
-    self.righe.sort_by("libro.titolo").each do |r|
-      note_e_righe += "#{r.quantita} - #{r.calc_prezzo} - #{r.libro.titolo}\r\n"
+    self.righe.where(delete: nil).sort_by("libro.titolo").each do |r|
+      note_e_righe += "#{r.quantita} - #{r.calc_prezzo} - #{r.libro.titolo} - #{r.remote_id}\r\n"
     end
     note_e_righe    
   end
@@ -32,7 +33,7 @@ class Appunto < CDQManagedObject
 
   def calc_importo
     importi = [0]
-    self.righe.each do |r|
+    self.righe.where(delete: nil).each do |r|
       importi << r.calc_importo.round(2)
     end    
     importi.reduce(:+).round(2)
@@ -41,7 +42,7 @@ class Appunto < CDQManagedObject
 
   def calc_copie
     copie = [0]
-    self.righe.each do |r|
+    self.righe.where(delete: nil).each do |r|
       copie << r.quantita
     end    
     copie.reduce(:+)

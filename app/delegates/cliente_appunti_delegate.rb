@@ -143,27 +143,30 @@ module ClienteAppuntiDelegate
     tableView.deselectRowAtIndexPath(indexPath, animated:false)
 
     if indexPath.section == 0
+      
       clienteController = ClienteFormController.alloc.initWithCliente(@cliente)
       clienteController.delegate = self
       self.navigationController.pushViewController clienteController, animated:true
     
     elsif indexPath.section == 1
-      # appunto = appunti_da_fare.objectAtIndex(indexPath.row)
-      # controller = UINavigationController.alloc.initWithRootViewController(AppuntoFormController.alloc.initWithAppunto(appunto))
-      # controller.topViewController.delegate = self
-      # self.presentViewController(controller, animated:true, completion:nil)
-
-      index = indexPath.row
-      controller = UINavigationController.alloc.initWithRootViewController AppuntoPageController.alloc.initWithAppunti(appunti_da_fare, index:index)
-      
+      appunto = appunti_da_fare.objectAtIndex(indexPath.row)
+      controller = UINavigationController.alloc.initWithRootViewController(AppuntoFormController.alloc.initWithAppunto(appunto))
+      controller.topViewController.delegate = self
       self.presentViewController(controller, animated:true, completion:nil)
 
+      # index = indexPath.row
+      # controller = UINavigationController.alloc.initWithRootViewController AppuntoPageController.alloc.initWithAppunti(appunti_da_fare, index:index)
+      
+      # self.presentViewController(controller, animated:true, completion:nil)
+
     elsif indexPath.section == 2
+      
       controller = AppuntiController.alloc.initWithCDQQuery(Appunto.where(cliente: @cliente).a_in_sospeso.cronologia, andTitle:@cliente.nome, andColor:COLORS[2])
       controller.show_cliente = false
       self.navigationController.pushViewController(controller, animated:true)
 
     elsif indexPath.section == 3
+      
       controller = AppuntiController.alloc.initWithCDQQuery(Appunto.where(cliente: @cliente).a_completato.cronologia, andTitle:@cliente.nome, andColor:COLORS[3])
       controller.show_cliente = false
       self.navigationController.pushViewController(controller, animated:true)

@@ -29,6 +29,8 @@ schema "0002 visita" do
     datetime :visita
 
     has_many :appunti, inverse: "Appunto.cliente" 
+    has_one  :propa, inverse: "Propa.cliente"
+
   end
 
   entity "Appunto" do
@@ -92,6 +94,21 @@ schema "0002 visita" do
 
   end
 
+  entity "Propa" do
 
+    integer32 :kit_1
+    integer32 :kit_4
+    integer32 :rel_1
+    integer32 :rel_2
+    integer32 :inglese
+    integer32 :vac_1
+    integer32 :vac_2
+    integer32 :vac_3
+    integer32 :vac_4
+    integer32 :vac_5
+
+    belongs_to :cliente, inverse: "Cliente.propa"
+
+  end
  
 end

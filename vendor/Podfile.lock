@@ -45,19 +45,19 @@ DEPENDENCIES:
   - TWTSideMenuViewController
 
 SPEC CHECKSUMS:
-  AFNetworking: 80c4e0652b08eb34e25b9c0ff3c82556fe5967b4
-  HexColors: 01384d2bbe8dc4ffa43c3b4135db6e976952d153
-  ISO8601DateFormatterValueTransformer: a705384ea6531255258e25b6480ba1180db703a0
-  LBBlurredImage: 30cc42be977bbcece286d26d2d9c08b8be7f05e8
-  MHPrettyDate: d9f42f2ec3dfece6352f18ac77aa33312174e09e
-  RestKit: 0b5f1bbc43b81beba158262a1adae48ac062eb1e
-  Reveal-iOS-SDK: 74a39b426dbc915962704ed24f43ee32ae7797f9
-  RKValueTransformers: 67b4ea3eb6a1c1a0b8c3c37eb4e4c05e4febeba2
-  SOCKit: d8d0dd3688ae1026c12367570da8fa8e1a6980fb
-  SVProgressHUD: 5034c6e22b8c2ca3e09402e48d41ed0340aa1c50
-  SWTableViewCell: da159b491b1253446ffbcabcfa94e6a4c94bf04b
-  TransitionKit: 6a6f3ddda38ae758778aa889dcb930e4f8d64edc
-  TSMessages: 8598a0645e9d54847f6e5f3b070bef39c493bbf8
-  TWTSideMenuViewController: 18633fb4be397ed1e83352ed50ddd55d04d94de3
+  AFNetworking: cf8e418e16f0c9c7e5c3150d019a3c679d015018
+  HexColors: abfd172e329dab59888614ccba6f216cec59289d
+  ISO8601DateFormatterValueTransformer: 3ac3a721381697cab4e792d8049ce2f2e9ad3036
+  LBBlurredImage: 33fc146058f2f607419b1db3eb1bfc1b1d9ac96c
+  MHPrettyDate: e0e5975041f0210c0542f4c5d7e3e44d1a8537be
+  RestKit: be8b58d4c72f23220fe7f77162f2a17d82f8ef84
+  Reveal-iOS-SDK: 5c06829ab290f1314d15c0f66aaa572fd2342c81
+  RKValueTransformers: d016f1967ae67997e492520fd0f9c512ccf168ae
+  SOCKit: c7376ac262bea9115b8f749358f762522a47d392
+  SVProgressHUD: 46088807596a795cbcb4affd92cf3f13b6ab3dda
+  SWTableViewCell: 118dc00cca91b7b892898f8a9c632633ad5c9b72
+  TransitionKit: bc306605fb5e05a743c18d42239dc0e211619547
+  TSMessages: 587c8041a112ccf6cce2d690e89949e5f7dd3a29
+  TWTSideMenuViewController: 29cecc7896d9d430dba70a1c45b35f4ddd8c6f1e
 
 COCOAPODS: 0.32.1

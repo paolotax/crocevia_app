@@ -1,5 +1,15 @@
 class Riga < CDQManagedObject
 
+  
+  def post_id
+    if remote_id == 0
+      return nil
+    else
+      return remote_id
+    end
+  end
+
+
   def calc_prezzo
     (prezzo_unitario * (100 - sconto) / 100).round(2)
   end
@@ -37,9 +47,6 @@ class Riga < CDQManagedObject
         self.sconto = 0
       end 
     end
-
-    puts "#{prezzo_unitario} ----"
-    puts sconto
 
   end
 
